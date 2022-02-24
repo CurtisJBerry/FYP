@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class SubjectFactory extends Factory
 {
@@ -14,7 +15,10 @@ class SubjectFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'subject_name' => $this->faker->realText(),
+            'exam_board' => $this->faker->text(),
+            'subject_level' => $this->faker->realText(),
+            'description' => $this->faker->realText(),
         ];
     }
 }

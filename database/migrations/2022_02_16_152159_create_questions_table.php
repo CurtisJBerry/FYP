@@ -17,6 +17,10 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->string('description',30);
             $table->enum('type',['text','image','audio','interactive']);
+            $table->foreignId('test_id')
+                ->references('id')
+                ->on('tests')
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
