@@ -13,11 +13,11 @@ class HomeController extends Controller
             return redirect()->route('login');
         }
 
-        if(Auth::user()->userType === 'ADM'){
+        if(Auth::user()->user_type === 'admin'){
             return redirect()->route('admin.dashboard');
         }
 
-        if(Auth::user()->userType === 'USR'){
+        if(Auth::user()->user_type === 'user'){
             return redirect()->route('user.dashboard');
         }
     }
