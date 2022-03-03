@@ -20,5 +20,9 @@ class HomeController extends Controller
         if(Auth::user()->user_type === 'user'){
             return redirect()->route('user.dashboard');
         }
+
+        if(Auth::user()->user_type === 'teacher'){
+            return redirect()->route('teacher.dashboard');
+        }
     }
 }

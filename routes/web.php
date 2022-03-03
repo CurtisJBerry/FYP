@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,15 +19,45 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', [HomeController::class, 'checkUserType']);
+Route::group(['middleware' => 'auth'], function() {
 
-Route::get('/admin/dashboard', function (){
-    return view('admin-dashboard');
-})->name('admin.dashboard');
+    Route::get('/home', [HomeController::class, 'checkUserType'])->name('home');
 
-Route::get('/user/dashboard', function (){
-    return view('dashboard');
-})->name('user.dashboard');
+    //admin only routes
+    Route::group(['middleware' => 'is_admin:admin'], function () {
+
+        Route::get('/admin/dashboard', function () {
+            return view('admin/admin-dashboard');
+        })->name('admin.dashboard');
+
+        Route::resource('/admin/users', AdminUserController::class)->name('index', 'admin.users');
+        Route::resource('/admin/user/update', AdminUserController::class)->name('update', 'admin.users.update');
+
+    });
+
+    //user only routes
+    Route::group(['middleware' => 'is_user:user'], function () {
+
+        Route::get('/user/dashboard', function (){
+            return view('student/dashboard');
+        })->name('user.dashboard');
+
+
+    });
+
+    //teacher only routes
+    Route::group(['middleware' => 'is_teacher:teacher'], function () {
+
+        Route::get('/teacher/dashboard', function (){
+            return view('teacher/teacher-dashboard');
+        })->name('teacher.dashboard');
+
+
+    });
+
+
+});
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
