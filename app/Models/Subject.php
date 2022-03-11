@@ -26,7 +26,7 @@ class Subject extends Model
     /**
      * Get the modules for the subject.
      */
-    public function modules(): HasMany
+    public function modules()
     {
         return $this->hasMany(Module::class);
     }

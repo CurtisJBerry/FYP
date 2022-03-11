@@ -16,9 +16,21 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
 
+                    <x-jet-nav-link href="{{ route('subjects.index') }}" :active="request()->routeIs('subjects.index')">
+                        {{ __('View Subjects') }}
+                    </x-jet-nav-link>
+
                     @if (Auth::user()->user_type == 'admin')
                         <x-jet-nav-link href="{{ route('admin.users') }}" :active="request()->routeIs('admin.users')">
                             {{ __('Manage Users') }}
+                        </x-jet-nav-link>
+
+                        <x-jet-nav-link href="{{ route('verification.index') }}" :active="request()->routeIs('verification.index')">
+                            {{ __('View Verification Requests') }}
+                        </x-jet-nav-link>
+
+                        <x-jet-nav-link href="{{ route('changelog.index') }}" :active="request()->routeIs('changelog.index')">
+                            {{ __('View Changelog') }}
                         </x-jet-nav-link>
                     @endif
                 </div>

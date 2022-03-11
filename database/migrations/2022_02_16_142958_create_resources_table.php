@@ -18,6 +18,9 @@ class CreateResourcesTable extends Migration
             $table->string('resource_name',20);
             $table->string('resource_path', 2048)->nullable();
             $table->text('description');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('module_id')->nullable()->constrained('modules');
+            $table->foreignId('question_id')->nullable()->constrained('questions');
             $table->timestamps();
         });
     }

@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\admin\AdminChangelogController;
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\AdminVerificationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +28,15 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('/home', [HomeController::class, 'checkUserType'])->name('home');
 
+    //Access Subjects functions
+    Route::resource('/subjects', SubjectController::class);
+
+    Route::resource('/module', ModuleController::class);
+
+    Route::post('/upload', [UploadController::class, 'create'])->name('upload');
+    Route::get('/download{path}', [UploadController::class, 'download'])->name('download');
+
+
     //admin only routes
     Route::group(['middleware' => 'is_admin:admin'], function () {
 
@@ -32,6 +46,9 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::resource('/admin/users', AdminUserController::class)->name('index', 'admin.users');
         Route::resource('/admin/user/update', AdminUserController::class)->name('update', 'admin.users.update');
+
+        Route::resource('/verification', AdminVerificationController::class);
+        Route::resource('/changelog', AdminChangelogController::class);
 
     });
 

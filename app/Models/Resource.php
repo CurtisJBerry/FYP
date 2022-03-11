@@ -20,6 +20,9 @@ class Resource extends Model
         'resource_name',
         'resource_path',
         'description',
+        'user_id',
+        'question_id',
+        'module_id',
     ];
 
     /**

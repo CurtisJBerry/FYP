@@ -44,22 +44,25 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->user_type }}</td>
                                     <td>
-                                        <a href="#" class="px-4 py-1 text-sm text-white bg-blue-400 rounded">Edit</a>
+                                        <x-jet-button wire:click="updateUserModal({{ $user->id }})">
+                                            {{__('Update')}}
+                                        </x-jet-button>
+{{--                                        <a href="#" class="px-4 py-1 text-sm text-white bg-blue-400 rounded">Edit</a>--}}
                                     </td>
                                     <td>
-                                        <a href="#" class="px-4 py-1 text-sm text-white bg-red-400 rounded">Delete</a>
+                                        <x-jet-danger-button wire:click="deleteUserModal">
+                                            {{__('Delete')}}
+                                        </x-jet-danger-button>
+{{--                                        <a href="#" class="px-4 py-1 text-sm text-white bg-red-400 rounded">Delete</a>--}}
                                     </td>
                                 </tr>
                                 @endforeach
-
-                                <!-- More people... -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </x-app-layout>
