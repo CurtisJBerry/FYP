@@ -33,8 +33,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::resource('/module', ModuleController::class);
 
-    Route::post('/upload', [UploadController::class, 'create'])->name('upload');
-    Route::get('/download{path}', [UploadController::class, 'download'])->name('download');
+    Route::post('/upload', [UploadController::class, 'store'])->name('upload');
+    Route::get('/download{name}', [UploadController::class, 'download'])->name('download');
 
 
     //admin only routes
@@ -44,8 +44,9 @@ Route::group(['middleware' => 'auth'], function() {
             return view('admin/admin-dashboard');
         })->name('admin.dashboard');
 
-        Route::resource('/admin/users', AdminUserController::class)->name('index', 'admin.users');
-        Route::resource('/admin/user/update', AdminUserController::class)->name('update', 'admin.users.update');
+
+        Route::resource('/admin-users',AdminUserController::class);
+        Route::post('/user-update',[AdminUserController::class, 'store'])->name('user-update');
 
         Route::resource('/verification', AdminVerificationController::class);
         Route::resource('/changelog', AdminChangelogController::class);

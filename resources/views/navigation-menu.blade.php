@@ -21,7 +21,7 @@
                     </x-jet-nav-link>
 
                     @if (Auth::user()->user_type == 'admin')
-                        <x-jet-nav-link href="{{ route('admin.users') }}" :active="request()->routeIs('admin.users')">
+                        <x-jet-nav-link href="{{ route('admin-users.index') }}" :active="request()->routeIs('admin-users.index')">
                             {{ __('Manage Users') }}
                         </x-jet-nav-link>
 
@@ -165,7 +165,7 @@
                     {{ __('Search Subjects') }}
                 </x-jet-nav-link>
 
-                <x-jet-nav-link href="{{ route('admin.users') }}" :active="request()->routeIs('admin.users')">
+                <x-jet-nav-link href="{{ route('admin-users.index') }}" :active="request()->routeIs('admin-users.index')">
                     {{ __('Manage Users') }}
                 </x-jet-nav-link>
 

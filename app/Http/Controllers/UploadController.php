@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resource;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
 
         $request->validate([
@@ -26,7 +28,7 @@ class UploadController extends Controller
 
         $resource = new Resource;
 
-        $resource->resource_name = $request->name;
+        $resource->resource_name = $request->name.".".$extension;
         $resource->resource_path = $path;
 
         $resource->user_id = $request->user;
@@ -38,10 +40,11 @@ class UploadController extends Controller
 
     }
 
-    public function download($path)
+    public function download($name)
     {
-
-        $filepath = public_path('/public/files/'.$path);
+        $filepath = storage_path('app/public/files/'.$name);
+        //$extension = pathinfo($filepath, PATHINFO_EXTENSION);
+        //dd($filepath);
         return response()->download($filepath);
 
     }

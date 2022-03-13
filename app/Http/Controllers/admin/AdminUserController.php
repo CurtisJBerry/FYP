@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminUserController extends Controller
 {
@@ -40,5 +41,26 @@ class AdminUserController extends Controller
         $user->save();
 
         return back()->with('success','Signing updated successfully!');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * @param \App\Models\User $user
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'name' => 'required',
+        ]);
+
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()->back()->banner('Updated User');
     }
 }

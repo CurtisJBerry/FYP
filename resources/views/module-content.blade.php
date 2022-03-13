@@ -19,7 +19,7 @@
 
                     @foreach($files as $file)
                         <p>{{ $file->resource_name }}</p>
-                        <a href="{{route('download',$file->resource_path)}}"><button class="btn btn-primary download">Download</button></a>
+                        <a href="{{ route('download',$file->resource_name) }}"><button class="btn btn-primary download">Download</button></a>
                     @endforeach
 
                 </div>
