@@ -18,29 +18,47 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Place of Teaching</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Years of Experience</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="relative px-6 py-3">
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-{{--                                @if(empty($subjects))--}}
-{{--                                    <td class="text-sm font-medium text-gray-900">No Subjects are currently available.</td>--}}
-{{--                                @else--}}
-{{--                                    @foreach($subjects as $subject)--}}
-{{--                                        <tr>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                                                <div class="flex items-center">--}}
-{{--                                                    <div class="ml-4">--}}
-{{--                                                        <div class="text-sm font-medium text-gray-900"><a href="{{ route('subjects.show', $subject->id) }}" >{{ $subject->subject_name }}</a></div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </td>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                                                <div class="text-sm text-gray-500">{{ $subject->exam_board }}</div>--}}
-{{--                                            </td>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $subject->subject_level }}</td>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $subject->description }}</td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
-{{--                                @endif--}}
+                                @if($requests->isNotEmpty())
+                                    @foreach($requests as $request)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">{{ $request->user->name }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-500">{{ $request->place_of_teaching }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $request->years_experience }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $request->status }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal{{$request->id}}">
+                                                    Update
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{$request->id}}">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">No Requests found!</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                                 </tbody>
                             </table>
                         </div>
