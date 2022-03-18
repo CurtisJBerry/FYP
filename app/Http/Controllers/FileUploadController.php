@@ -95,6 +95,17 @@ class FileUploadController extends Controller
 
     }
 
+    public function view($name)
+    {
+
+        $filepath = storage_path('app/public/files/'.$name);
+
+        return response()->file($filepath);
+
+    }
+
+
+
     public function download($name, $id)
     {
         $log = new Changelog;

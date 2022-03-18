@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/download/{id}/{name}','download')->name('file-download');
 
+        Route::get('/view/{id}','view')->name('file-view');
+
         Route::post('/file-upload', 'store')->name('file-upload');
 
         Route::post('/file-delete/{id}', 'destroy')->name('file-delete');
