@@ -16,6 +16,10 @@ class CreateTestsTable extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
             $table->string('test_name',20);
+            $table->foreignId('module_id')
+                ->references('id')
+                ->on('modules')
+                ->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

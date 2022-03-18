@@ -40,4 +40,12 @@ class Resource extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    /**
+     * Get the changelog associated with the resource.
+     */
+    public function log()
+    {
+        return $this->hasOne(Changelog::class);
+    }
 }

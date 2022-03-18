@@ -28,4 +28,12 @@ class Changelog extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the resource that is part of the changelog.
+     */
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class);
+    }
 }

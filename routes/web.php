@@ -6,7 +6,7 @@ use App\Http\Controllers\admin\AdminVerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\UploadController;
+use App\Http\Controllers\FileUploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,8 +33,19 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::resource('/module', ModuleController::class);
 
-    Route::post('/upload', [UploadController::class, 'store'])->name('upload');
-    Route::get('/download{name}', [UploadController::class, 'download'])->name('download');
+
+    Route::controller(FileUploadController::class)->group(function () {
+
+        Route::get('/download/{id}/{name}','download')->name('file-download');
+
+        Route::get('/view/{id}','view')->name('file-view');
+
+        Route::post('/file-upload', 'store')->name('file-upload');
+
+        Route::post('/file-delete/{id}', 'destroy')->name('file-delete');
+
+        Route::post('/file-edit/{id}', 'update')->name('file-edit');
+    });
 
 
     //admin only routes
@@ -43,7 +54,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/admin/dashboard', function () {
             return view('admin/admin-dashboard');
         })->name('admin.dashboard');
-
 
         Route::resource('/admin-users',AdminUserController::class);
         Route::post('/user-update',[AdminUserController::class, 'store'])->name('user-update');
