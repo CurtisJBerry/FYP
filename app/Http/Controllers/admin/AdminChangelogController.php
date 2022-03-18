@@ -16,9 +16,9 @@ class AdminChangelogController extends Controller
     public function index()
     {
 
-        $changelog = Changelog::paginate(10);
+        $changelogs = Changelog::paginate(10);
 
-        return view('admin/changelog', ['changelog' => $changelog]);
+        return view('admin/changelog', ['changelogs' => $changelogs]);
 
     }
 }

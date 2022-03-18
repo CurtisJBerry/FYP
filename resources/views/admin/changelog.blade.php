@@ -17,29 +17,47 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resource Name</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated At</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-{{--                                @if(empty($subjects))--}}
-{{--                                    <td class="text-sm font-medium text-gray-900">No Subjects are currently available.</td>--}}
-{{--                                @else--}}
-{{--                                    @foreach($subjects as $subject)--}}
-{{--                                        <tr>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                                                <div class="flex items-center">--}}
-{{--                                                    <div class="ml-4">--}}
-{{--                                                        <div class="text-sm font-medium text-gray-900"><a href="{{ route('subjects.show', $subject->id) }}" >{{ $subject->subject_name }}</a></div>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </td>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap">--}}
-{{--                                                <div class="text-sm text-gray-500">{{ $subject->exam_board }}</div>--}}
-{{--                                            </td>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $subject->subject_level }}</td>--}}
-{{--                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $subject->description }}</td>--}}
-{{--                                        </tr>--}}
-{{--                                    @endforeach--}}
-{{--                                @endif--}}
+                                @if($changelogs->isNotEmpty())
+                                    @foreach($changelogs as $log)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">{{ $log->user->name }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-500">{{ $log->resource->resource_name }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $log->updated_at }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                                                    Update
+                                                </button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">No Logs found!</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
+                                </tbody>
+
                                 </tbody>
                             </table>
                         </div>
