@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminVerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\student\VerificationController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\FileUploadController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,21 @@ Route::group(['middleware' => 'auth'], function() {
     });
 
 
+    //user only routes
+    Route::group(['middleware' => 'is_user:user'], function () {
+
+        Route::get('/user/dashboard', function (){
+            return view('student/dashboard');
+        })->name('user.dashboard');
+
+        Route::get('/user/verification', function (){
+            return view('student/request-verification');
+        })->name('user.verification');
+
+        Route::post('/user/verification',[VerificationController::class, 'store'])->name('user-verify');
+
+    });
+
     //admin only routes
     Route::group(['middleware' => 'is_admin:admin'], function () {
 
@@ -63,15 +79,6 @@ Route::group(['middleware' => 'auth'], function() {
 
     });
 
-    //user only routes
-    Route::group(['middleware' => 'is_user:user'], function () {
-
-        Route::get('/user/dashboard', function (){
-            return view('student/dashboard');
-        })->name('user.dashboard');
-
-
-    });
 
     //teacher only routes
     Route::group(['middleware' => 'is_teacher:teacher'], function () {

@@ -21,25 +21,4 @@ class AdminVerificationController extends Controller
         return view('admin/verification-requests', ['requests' => $requests]);
 
     }
-
-//    /**
-//     * Update the specified resource in storage.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  \App\Models\User  $signing
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function update(Request $request, User $user)
-//
-//    {
-//
-//        $request->validate([
-//            'user_type' => 'required'
-//        ]);
-//
-//        $user->user_type = $request->user_type;
-//        $user->save();
-//
-//        return back()->with('success','Signing updated successfully!');
-//    }
 }

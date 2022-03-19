@@ -72,7 +72,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Edit File Modal -->
         <div class="modal fade" id="editFileModal{{$file->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -119,7 +119,7 @@
     </div>
 
 
-    <!-- Modal -->
+    <!-- Add File Modal -->
     <div class="modal fade" id="addFileModal{{Auth::user()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
