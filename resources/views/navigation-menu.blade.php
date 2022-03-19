@@ -20,6 +20,12 @@
                         {{ __('View Subjects') }}
                     </x-jet-nav-link>
 
+                    @if(Auth::user()->user_type == "user")
+                        <x-jet-nav-link href="{{ route('user.verification') }}" :active="request()->routeIs('user.verification')">
+                            {{ __('Request Teacher Verification') }}
+                        </x-jet-nav-link>
+                    @endif
+
                     @if (Auth::user()->user_type == 'admin')
                         <x-jet-nav-link href="{{ route('admin-users.index') }}" :active="request()->routeIs('admin-users.index')">
                             {{ __('Manage Users') }}
