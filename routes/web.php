@@ -25,7 +25,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['auth:sanctum', 'verified'], function() {
 
     Route::get('/home', [HomeController::class, 'checkUserType'])->name('home');
 
@@ -61,6 +61,10 @@ Route::group(['middleware' => 'auth'], function() {
         })->name('user.verification');
 
         Route::post('/user/verification',[VerificationController::class, 'store'])->name('user-verify');
+
+        Route::get('/user/past-tests', function (){
+            return view('student/past-tests');
+        })->name('user.past-tests');
 
     });
 
