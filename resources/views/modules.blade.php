@@ -19,9 +19,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                @if(empty($modules) or $modules == "")
-                                    <td class="text-sm font-medium text-gray-900">No Modules are currently available.</td>
-                                @else
+                                @if($modules->count())
                                     @foreach($modules as $module)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -34,6 +32,16 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $module->description }}</td>
                                         </tr>
                                     @endforeach
+                                @else
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">No Modules found!</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endif
                                 </tbody>
                             </table>
