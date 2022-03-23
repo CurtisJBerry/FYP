@@ -48,4 +48,12 @@ class Resource extends Model
     {
         return $this->hasOne(Changelog::class);
     }
+
+    /**
+     * The tags that belong to the resource.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Module;
 use App\Models\Resource;
+use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,7 +24,9 @@ class ModuleController extends Controller
 
         $tests = Module::find($module->id)->test;
 
-        return view('module-content', ['module' => $module, 'files' => $files, 'tests' => $tests]);
+        $tags = Tag::all();
+
+        return view('module-content', ['module' => $module, 'files' => $files, 'tests' => $tests, 'tags' => $tags]);
 
     }
 

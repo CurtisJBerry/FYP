@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
             SubjectSeeder::class,
             ModuleSeeder::class,
+            TagSeeder::class,
         ]);
     }
 }

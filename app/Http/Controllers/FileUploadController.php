@@ -21,15 +21,18 @@ class FileUploadController extends Controller
             'description' => 'required',
             'user' => 'required',
             'filename' => 'required',
-            'module' => 'required'
+            'module' => 'required',
+            'tags' => 'required',
 
         ]);
+
 
         $extension = $request->file->extension();
         $path = $request->file('file')->storeAs('public/files', $request->filename.".".$extension);
 
-
         $resource = new Resource;
+
+
 
         $resource->resource_name = $request->filename.".".$extension;
         $resource->resource_path = $path;
@@ -38,6 +41,11 @@ class FileUploadController extends Controller
         $resource->description = $request->description;
         $resource->module_id = $request->module;
         $resource->save();
+
+
+        foreach($request->tags as $tag){
+            $resource->tags()->attach($resource->id, ['tag_id' => $tag]);
+        }
 
         return back()->banner('File added successfully.');
 

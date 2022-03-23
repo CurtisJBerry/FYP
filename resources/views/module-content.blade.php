@@ -22,7 +22,7 @@
                     @endif
                     <p> PDF and Image files will open in browser, any other type of file will download automatically when clicking view.</p>
                     <div class="grid grid-cols-6">
-                        @if(!empty($files))
+                        @if($files->count())
                             @foreach($files as $file)
                                 <div class="flex items-center justify-center flex-col p-4 rounded-md w-45 space-y-4">
                                     <h1 class="text-black">{{ $file->resource_name }}</h1>
@@ -35,7 +35,14 @@
                                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
                                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
                                             </svg></a>
-
+                                    </div>
+                                    <div class="inline-flex">
+                                        <h1>Suitable for:</h1>
+                                    </div>
+                                    <div class="inline-flex">
+                                        @foreach($file->tags as $tag)
+                                            <p style="padding: 5px">{{$tag->tag_name}}</p>
+                                        @endforeach
                                     </div>
                                     <div class="inline-flex">
                                         @if(Auth::user()->user_type !== "user")
@@ -61,7 +68,7 @@
 
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$module->module_name}}</h3>
-                    @if($tests->isNotEmpty())
+                    @if($tests->count())
                         @foreach($tests as $test)
                             <h3> {{ $test->test_name }}</h3>
                         @endforeach
@@ -72,6 +79,7 @@
             </div>
         </div>
 
+        @if(isset($file))
         <!-- Edit File Modal -->
         <div class="modal fade" id="editFileModal{{$file->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -114,9 +122,7 @@
                 </div>
             </div>
         </div>
-
-
-    </div>
+        @endif
 
 
     <!-- Add File Modal -->
@@ -144,12 +150,23 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="filename" class="col-form-label">Description:</label>
+                            <label for="description" class="col-form-label">Description:</label>
                             <input type="text" class="form-control" id="description" name="description" required>
 
                             <input type="hidden" name="user" value="{{ Auth::user()->id }}">
 
                             <input type="hidden" name="module" value="{{ $module->id }}">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="tags" class="col-form-label">Add Tags for Learner Types: Use ctrl and click for multiple</label>
+                                <select name="tags[]" id="tags" class="form-control" multiple>
+                                    @foreach($tags as $tag)
+                                        <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -159,6 +176,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 </x-app-layout>
