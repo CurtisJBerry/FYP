@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Changelog;
 use App\Models\Resource;
-use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use JetBrains\PhpStorm\NoReturn;
+
 
 class FileUploadController extends Controller
 {
@@ -30,17 +29,8 @@ class FileUploadController extends Controller
         $extension = $request->file->extension();
         $path = $request->file('file')->storeAs('public/files', $request->filename.".".$extension);
 
-        $resource = new Resource;
-
-
-
-        $resource->resource_name = $request->filename.".".$extension;
-        $resource->resource_path = $path;
-
-        $resource->user_id = $request->user;
-        $resource->description = $request->description;
-        $resource->module_id = $request->module;
-        $resource->save();
+        //values set in extracted method
+        $resource = $this->getResource($request, $extension, $path);
 
 
         foreach($request->tags as $tag){
@@ -60,6 +50,7 @@ class FileUploadController extends Controller
             'description' => 'required',
             'user' => 'required',
             'module' => 'required',
+            'tags' => 'required',
 
         ]);
 
@@ -72,31 +63,32 @@ class FileUploadController extends Controller
             $file->delete();
 
             $extension = $request->file->extension();
-            $path = $request->file('file')->storeAs('public/files', $request->filename.".".$extension);
+            $path = $request->file('file')->storeAs('public/files/', $request->filename.".".$extension);
 
-
-            $resource = new Resource;
-
-            $resource->resource_name = $request->filename.".".$extension;
-            $resource->resource_path = $path;
-
-            $resource->user_id = $request->user;
-            $resource->description = $request->description;
-            $resource->module_id = $request->module;
-            $resource->save();
-
-
+            //values set in extracted method
+            $resource = $this->getResource($request, $extension, $path);
 
         }else{
 
             //set new filename, with extension and path
-            $extension = $request->file->extension();
-            $path = $request->file('file')->storeAs('public/files', $request->filename.".".$extension);
+            $extension = pathinfo($file->resource_name, PATHINFO_EXTENSION);
+
+            //find and edit existing file name
+            Storage::move('public/files/'.$file->resource_name, 'public/files/'.$request->filename.".".$extension);
 
             $file->resource_name = $request->filename.".".$extension;
-            $file->resource_path = $path;
+            $file->resource_path = 'public/files/'.$request->filename.".".$extension;
+
             $file->description = $request->description;
             $file->save();
+        }
+
+        //remove existing tags
+        $file->tags()->detach();
+
+        //add updated tags
+        foreach($request->tags as $tag){
+            $file->tags()->attach($file->id, ['tag_id' => $tag]);
         }
 
         return back()->banner('File updated successfully.');
@@ -140,6 +132,27 @@ class FileUploadController extends Controller
 
         return back()->dangerBanner('File deleted successfully.');
 
+    }
+
+    /**
+     * @param Request $request
+     * @param $extension
+     * @param bool|string $path
+     * @return Resource
+     */
+    public function getResource(Request $request, $extension, bool|string $path): Resource
+    {
+        $resource = new Resource;
+
+
+        $resource->resource_name = $request->filename . "." . $extension;
+        $resource->resource_path = $path;
+
+        $resource->user_id = $request->user;
+        $resource->description = $request->description;
+        $resource->module_id = $request->module;
+        $resource->save();
+        return $resource;
     }
 
 }

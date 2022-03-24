@@ -111,8 +111,20 @@
                                 <input type="hidden" name="user" value="{{ Auth::user()->id }}">
 
                                 <input type="hidden" name="module" value="{{ $module->id }}">
-
                             </div>
+
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label for="tags" class="col-form-label">Edit Tags for Learner Types: Use ctrl and click for multiple</label>
+                                    <select name="tags[]" id="tags" class="form-control" multiple>
+                                        @foreach($tags as $tag)
+                                            <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-success">Update File</button>
