@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminVerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\student\PastTestsController;
 use App\Http\Controllers\student\VerificationController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\FileUploadController;
@@ -62,9 +63,7 @@ Route::group(['auth:sanctum', 'verified'], function() {
 
         Route::post('/user/verification',[VerificationController::class, 'store'])->name('user-verify');
 
-        Route::get('/user/past-tests', function (){
-            return view('student/past-tests');
-        })->name('user.past-tests');
+        Route::resource('/past-tests',PastTestsController::class);
 
     });
 

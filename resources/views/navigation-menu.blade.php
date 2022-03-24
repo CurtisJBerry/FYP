@@ -21,13 +21,14 @@
                     </x-jet-nav-link>
 
                     @if(Auth::user()->user_type == "user")
+                        <x-jet-nav-link href="{{ route('past-tests.index') }}" :active="request()->routeIs('past-tests.index')">
+                            {{ __('View Past Test Scores') }}
+                        </x-jet-nav-link>
+
                         <x-jet-nav-link href="{{ route('user.verification') }}" :active="request()->routeIs('user.verification')">
                             {{ __('Request Teacher Verification') }}
                         </x-jet-nav-link>
 
-                        <x-jet-nav-link href="{{ route('user.past-tests') }}" :active="request()->routeIs('user.past-tests')">
-                            {{ __('View Past Test Scores') }}
-                        </x-jet-nav-link>
                     @endif
 
                     @if (Auth::user()->user_type == 'admin')
