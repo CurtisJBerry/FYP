@@ -25,7 +25,6 @@
                         @if($files->count())
                             @foreach($files as $file)
                                 @foreach($file->resource as $resource)
-                                    @foreach($resource->tags as $tag)
                                             <div class="flex items-center justify-center flex-col p-4 rounded-md w-45 space-y-4 bg-blue-300">
                                                 <h1 class="text-black">{{ $resource->resource_name }}</h1>
                                                 <div class="inline-flex">
@@ -63,7 +62,6 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                    @endforeach
                                 @endforeach
                             @endforeach
                         @else

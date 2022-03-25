@@ -27,9 +27,12 @@ class ModuleController extends Controller
             $files = Module::where('id',$module->id)->with(['resource.tags' => function ($query){
                 $query->where('tag_name','=', Auth::user()->learner_type);
             }])->get();
-            
-        }else{
 
+            if ($files->count() >= 1){
+                $files = collect();
+            }
+
+        }else{
             //if learner type is not set, get all resources and tags
             $files = Module::where('id',$module->id)->with('resource.tags')->get();
         }
