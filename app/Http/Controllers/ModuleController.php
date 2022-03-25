@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
@@ -20,7 +21,19 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        $files = Module::find($module->id)->resource;
+
+        if (isset(Auth::user()->learner_type)){
+            //if learner type is set, find resources and tags based on learner type
+            $files = Module::where('id',$module->id)->with(['resource.tags' => function ($query){
+                $query->where('tag_name','=', Auth::user()->learner_type);
+            }])->get();
+            
+        }else{
+
+            //if learner type is not set, get all resources and tags
+            $files = Module::where('id',$module->id)->with('resource.tags')->get();
+        }
+
 
         $tests = Module::find($module->id)->test;
 
