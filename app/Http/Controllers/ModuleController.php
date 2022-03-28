@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
@@ -20,13 +21,29 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        $files = Module::find($module->id)->resource;
 
-        $tests = Module::find($module->id)->test;
+        if (isset(Auth::user()->learner_type) && Auth::user()->user_type != 'admin'){
+            //if learner type is set, find resources and tags based on learner type
+            $tags = Tag::where('tag_name','=', Auth::user()->learner_type)->with(['resources' => function ($query) use ($module) {
+                $query->where('module_id',$module->id);
+            }])->get();
 
-        $tags = Tag::all();
 
-        return view('module-content', ['module' => $module, 'files' => $files, 'tests' => $tests, 'tags' => $tags]);
+        }else{
+            //if learner type is not set, get all resources and tags
+            $tags = Tag::with(['resources' => function ($query) use ($module) {
+                $query->where('module_id',$module->id)->groupBy('resource_id');
+            }])->get();
+
+
+        }
+
+
+        $tests = Test::where('module_id',$module->id);
+
+        $alltags = Tag::all();
+
+        return view('module-content', ['module' => $module, 'tags' => $tags, 'tests' => $tests, 'alltags' => $alltags]);
 
     }
 
