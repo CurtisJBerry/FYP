@@ -36,4 +36,36 @@ class SubjectController extends Controller
         return view('modules', ['subject' => $subject] , ['modules' => $modules]);
 
     }
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'subjectname' => 'required',
+            'exam' => 'required',
+            'level' => 'required',
+            'description' => 'required',
+
+        ]);
+
+        $subject = Subject::where('subject_name', $request->subjectname);
+
+        if ($subject){
+            return back()->dangerBanner('A Subject with this name already exists, please try another name.');
+        }else{
+
+            $subject = new Subject;
+
+            $subject->subject_name = $request->subjectname;
+            $subject->exam_board = $request->exam;
+            $subject->subject_level = $request->level;
+            $subject->description = $request->description;
+
+            $subject->save();
+
+
+            return back()->banner('Subject added successfully.');
+        }
+
+    }
 }

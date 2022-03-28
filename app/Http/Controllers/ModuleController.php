@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Module;
 use App\Models\Resource;
+use App\Models\Subject;
 use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -46,5 +47,36 @@ class ModuleController extends Controller
         return view('module-content', ['module' => $module, 'tags' => $tags, 'tests' => $tests, 'alltags' => $alltags]);
 
     }
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'modulename' => 'required',
+            'description' => 'required',
+            'subject' => 'required',
+
+        ]);
+
+        $module = Module::where('module_name', $request->modulename);
+
+        if ($module){
+            return back()->dangerBanner('A Module with this name already exists, please try another name.');
+        }else{
+            $module = new Module;
+
+            $module->module_name = $request->modulename;
+            $module->subject_id = $request->subject;
+            $module->description = $request->description;
+
+            $module->save();
+
+
+            return back()->banner('Module added successfully.');
+        }
+
+    }
+
+
 
 }

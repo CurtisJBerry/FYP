@@ -90,13 +90,7 @@ Route::group(['auth:sanctum', 'verified'], function() {
             return view('teacher/teacher-dashboard');
         })->name('teacher.dashboard');
 
-
     });
 
 
 });
-
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
