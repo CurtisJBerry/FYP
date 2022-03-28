@@ -22,27 +22,28 @@ class ModuleController extends Controller
     public function show(Module $module)
     {
 
-        if (isset(Auth::user()->learner_type)){
+        if (isset(Auth::user()->learner_type) && Auth::user()->user_type != 'admin'){
             //if learner type is set, find resources and tags based on learner type
-            $files = Module::where('id',$module->id)->with(['resource.tags' => function ($query){
-                $query->where('tag_name','=', Auth::user()->learner_type);
+            $tags = Tag::where('tag_name','=', Auth::user()->learner_type)->with(['resources' => function ($query) use ($module) {
+                $query->where('module_id',$module->id);
             }])->get();
 
-            if ($files->count() >= 1){
-                $files = collect();
-            }
 
         }else{
             //if learner type is not set, get all resources and tags
-            $files = Module::where('id',$module->id)->with('resource.tags')->get();
+            $tags = Tag::with(['resources' => function ($query) use ($module) {
+                $query->where('module_id',$module->id)->groupBy('resource_id');
+            }])->get();
+
+
         }
 
 
-        $tests = Module::find($module->id)->test;
+        $tests = Test::where('module_id',$module->id);
 
-        $tags = Tag::all();
+        $alltags = Tag::all();
 
-        return view('module-content', ['module' => $module, 'files' => $files, 'tests' => $tests, 'tags' => $tags]);
+        return view('module-content', ['module' => $module, 'tags' => $tags, 'tests' => $tests, 'alltags' => $alltags]);
 
     }
 

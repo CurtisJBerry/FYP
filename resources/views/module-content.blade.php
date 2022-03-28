@@ -22,17 +22,17 @@
                     @endif
                     <p> PDF and Image files will open in browser, any other type of file will download automatically when clicking view.</p>
                     <div class="grid grid-cols-6">
-                        @if($files->count())
-                            @foreach($files as $file)
-                                @foreach($file->resource as $resource)
-                                            <div class="flex items-center justify-center flex-col p-4 rounded-md w-45 space-y-4 bg-blue-300">
-                                                <h1 class="text-black">{{ $resource->resource_name }}</h1>
+                        @if($tags->count())
+                            @foreach($tags as $tag)
+                                @foreach($tag->resources as $file)
+                                            <div class="flex items-center justify-center flex-col p-4 rounded-md w-40 space-y-4 bg-blue-300">
+                                                <h1 class="text-black">{{ $file->resource_name }}</h1>
                                                 <div class="inline-flex">
-                                                    <a href="{{ route('file-view',$resource->resource_name) }}" title="View file" style="padding: 5px"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                                                    <a href="{{ route('file-view',$file->resource_name) }}" title="View file" style="padding: 5px"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
                                                         <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
                                                     </svg></a>
 
-                                                    <a href="{{ route('file-download',[$resource->resource_name, $resource->id]) }}" title="Download file" style="padding: 5px"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                    <a href="{{ route('file-download',[$file->resource_name, $file->id]) }}" title="Download file" style="padding: 5px"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                                                         <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
                                                         <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
                                                     </svg></a>
@@ -41,19 +41,19 @@
                                                     <h1>Suitable for:</h1>
                                                 </div>
                                                 <div class="inline-flex">
-                                                    @foreach($resource->tags as $tag)
+                                                    @foreach($file->tags as $tag)
                                                         <p style="padding: 3px">{{$tag->tag_name}}</p>
                                                     @endforeach
                                                 </div>
                                                 <div class="inline-flex">
                                                     @if(Auth::user()->user_type !== "user")
                                                         <div style="padding: 5px">
-                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editFileModal{{$resource->id}}">
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editFileModal{{$file->id}}">
                                                                 Edit
                                                             </button>
                                                         </div>
                                                         <div style="padding: 5px">
-                                                            <form class="inline" action="{{ route('file-delete',$resource->id) }}" method="POST">
+                                                            <form class="inline" action="{{ route('file-delete',$file->id) }}" method="POST">
                                                                 @csrf
                                                                 @method('POST')
                                                                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -66,7 +66,7 @@
                             @endforeach
                         @else
                             <div class="flex items-center justify-center flex-col p-4 rounded-md w-30 space-y-4">
-                                <p>No files are currently available, sorry!</p>
+                                <p>No files match your learner type, or are currently available, sorry!</p>
                             </div>
                         @endif
                     </div>
@@ -123,7 +123,7 @@
                                 <div class="form-group">
                                     <label for="tags" class="col-form-label">Edit Tags for Learner Types: Use ctrl and click for multiple</label>
                                     <select name="tags[]" id="tags" class="form-control" multiple>
-                                        @foreach($tags as $tag)
+                                        @foreach($alltags as $tag)
                                             <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
                                         @endforeach
 
@@ -180,7 +180,7 @@
                             <div class="form-group">
                                 <label for="tags" class="col-form-label">Add Tags for Learner Types: Use ctrl and click for multiple</label>
                                 <select name="tags[]" id="tags" class="form-control" multiple>
-                                    @foreach($tags as $tag)
+                                    @foreach($alltags as $tag)
                                         <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
                                     @endforeach
                                 </select>
