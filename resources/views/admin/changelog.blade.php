@@ -17,7 +17,6 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resource Name</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated At</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -35,14 +34,6 @@
                                                 <div class="text-sm text-gray-500">{{ $log->resource->resource_name }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $log->updated_at }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
-                                                    Update
-                                                </button>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-                                                    Delete
-                                                </button>
-                                            </td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -57,11 +48,10 @@
                                     </tr>
                                 @endif
                                 </tbody>
-
-                                </tbody>
                             </table>
                         </div>
                     </div>
+                    {{$changelogs->links()}}
                 </div>
             </div>
         </div>

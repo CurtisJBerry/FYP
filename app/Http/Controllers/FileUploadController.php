@@ -95,8 +95,13 @@ class FileUploadController extends Controller
 
     }
 
-    public function view($name)
+    public function view($name, $id)
     {
+
+        $log = new Changelog;
+        $log->user_id = Auth::user()->id;
+        $log->resource_id = $id;
+        $log->save();
 
         $filepath = storage_path('app/public/files/'.$name);
 
@@ -108,14 +113,16 @@ class FileUploadController extends Controller
 
     public function download($name, $id)
     {
+
         $log = new Changelog;
         $log->user_id = Auth::user()->id;
         $log->resource_id = $id;
         $log->save();
 
+
         $filepath = storage_path('app/public/files/'.$name);
 
-        return response()->download($filepath);
+        return response()->download($filepath, $name);
 
     }
 
@@ -152,6 +159,7 @@ class FileUploadController extends Controller
         $resource->description = $request->description;
         $resource->module_id = $request->module;
         $resource->save();
+
         return $resource;
     }
 

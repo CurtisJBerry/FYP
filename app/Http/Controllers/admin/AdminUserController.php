@@ -16,51 +16,22 @@ class AdminUserController extends Controller
      */
     public function index() {
 
-        $users = User::paginate(10);
+        $users = User::whereIn('user_type',['user','teacher'])->paginate(10);
 
         return view('admin/user-management', ['users' => $users]);
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $signing
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
 
+    public function destroy($user)
     {
 
-        $request->validate([
-            'user_type' => 'required'
-        ]);
+        $toDelete = User::find($user);
 
-        $user->user_type = $request->user_type;
-        $user->save();
+        $toDelete->delete();
 
-        return back()->with('success','Signing updated successfully!');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param \App\Models\User $user
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'email' => 'required',
-            'name' => 'required',
-        ]);
+        return back()->banner('User deleted successfully.');
 
-        $user = Auth::user();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
-
-        return redirect()->back()->banner('Updated User');
     }
 }

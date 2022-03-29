@@ -38,9 +38,9 @@ Route::group(['auth:sanctum', 'verified'], function() {
 
     Route::controller(FileUploadController::class)->group(function () {
 
-        Route::get('/download/{id}/{name}','download')->name('file-download');
+        Route::get('/download/{name}/{id}','download')->name('file-download');
 
-        Route::get('/view/{id}','view')->name('file-view');
+        Route::get('/view/{name}/{id}','view')->name('file-view');
 
         Route::post('/file-upload', 'store')->name('file-upload');
 
