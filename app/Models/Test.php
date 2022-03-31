@@ -32,7 +32,7 @@ class Test extends Model
     /**
      * Get the resources for the module.
      */
-    public function question(): HasMany
+    public function questions(): HasMany
     {
         return $this->hasMany(Question::class);
     }

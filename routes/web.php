@@ -9,6 +9,9 @@ use App\Http\Controllers\student\PastTestsController;
 use App\Http\Controllers\student\VerificationController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\teacher\TeacherAnswerController;
+use App\Http\Controllers\teacher\TeacherQuestionController;
+use App\Http\Controllers\teacher\TeacherTestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,6 +92,11 @@ Route::group(['auth:sanctum', 'verified'], function() {
         Route::get('/teacher/dashboard', function (){
             return view('teacher/teacher-dashboard');
         })->name('teacher.dashboard');
+
+        //teacher test creation controllers
+        Route::resource('/teacher-tests',TeacherTestController::class);
+        Route::resource('/teacher-question',TeacherQuestionController::class);
+        Route::resource('/teacher-answer',TeacherAnswerController::class);
 
     });
 

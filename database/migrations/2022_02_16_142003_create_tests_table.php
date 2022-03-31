@@ -15,8 +15,9 @@ class CreateTestsTable extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('test_name',20);
+            $table->string('test_name',30);
             $table->foreignId('module_id')
+                ->nullable()
                 ->references('id')
                 ->on('modules')
                 ->cascadeOnDelete()->cascadeOnUpdate();

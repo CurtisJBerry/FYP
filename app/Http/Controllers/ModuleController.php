@@ -39,8 +39,7 @@ class ModuleController extends Controller
 
         }
 
-
-        $tests = Test::where('module_id',$module->id);
+        $tests = Test::where('module_id',$module->id)->get();
 
         $alltags = Tag::all();
 
@@ -60,7 +59,7 @@ class ModuleController extends Controller
 
         $module = Module::where('module_name', $request->modulename);
 
-        if ($module){
+        if ($module->count()){
             return back()->dangerBanner('A Module with this name already exists, please try another name.');
         }else{
             $module = new Module;

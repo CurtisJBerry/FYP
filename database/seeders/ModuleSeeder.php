@@ -28,7 +28,7 @@ class ModuleSeeder extends Seeder
 
                 'module_name' => 'Shakespeare',
                 'subject_id' => 2,
-                'description' => 'In this module we will cover many of Shakespeares important works',
+                'description' => 'In this module we will cover many of Shakespeare\'s important works',
 
             ]);
     }

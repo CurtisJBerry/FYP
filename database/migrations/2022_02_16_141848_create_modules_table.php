@@ -15,7 +15,7 @@ class CreateModulesTable extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->string('module_name',20);
+            $table->string('module_name',30);
             $table->foreignId('subject_id')
                 ->references('id')
                 ->on('subjects')

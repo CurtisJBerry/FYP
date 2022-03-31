@@ -33,7 +33,7 @@ class Question extends Model
     /**
      * Get the answers for the question.
      */
-    public function answer(): HasMany
+    public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
     }
