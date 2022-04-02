@@ -32,7 +32,7 @@ class SubjectController extends Controller
     public function show(Subject $subject) {
 
 
-        $modules = Subject::find($subject->id)->modules;
+        $modules = Module::where('subject_id',$subject->id)->paginate(10);
 
         return view('modules', ['subject' => $subject] , ['modules' => $modules]);
 

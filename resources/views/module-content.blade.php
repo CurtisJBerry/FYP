@@ -132,6 +132,9 @@
                 </div>
 
                 <div class="p-6 bg-white border-b border-gray-200">
+                    <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
+                            Go Back
+                        </button></a>
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$module->module_name}}</h3>
                     @if($tests->count())
                         @foreach($tests as $test)

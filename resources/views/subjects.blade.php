@@ -13,10 +13,13 @@
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
                             @if(Auth::user()->user_type !== "user")
-                                <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addSubjectModal">
+                                <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addSubjectModal">
                                     Add Subject
                                 </button>
                             @endif
+                                <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
+                                        Go Back
+                                    </button></a>
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                 <tr>
@@ -57,10 +60,10 @@
                                 @endif
                                 </tbody>
                             </table>
+                                {{$subjects->links()}}
                             </div>
                         </div>
                     </div>
-                    {{$subjects->links()}}
                 </div>
             </div>
         </div>

@@ -27,7 +27,7 @@ class FileUploadController extends Controller
 
 
         $extension = $request->file->extension();
-        $path = $request->file('file')->storeAs('public/files', $request->filename.".".$extension);
+        $path = $request->file('file')->storeAs('files/', $request->filename.".".$extension, 'public');
 
         //values set in extracted method
         $resource = $this->getResource($request, $extension, $path);
@@ -103,9 +103,11 @@ class FileUploadController extends Controller
         $log->resource_id = $id;
         $log->save();
 
-        $filepath = storage_path('app/public/files/'.$name);
 
-        return response()->file($filepath);
+
+        //$filepath = storage_path('app/public/files/'.$name);
+
+        return view('view-file', compact('name'));
 
     }
 

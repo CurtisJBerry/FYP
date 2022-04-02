@@ -13,10 +13,13 @@
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
                             @if(Auth::user()->user_type !== "user")
-                                <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addModuleModal">
+                                <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addModuleModal">
                                     Add Module
                                 </button>
                             @endif
+                                <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
+                                        Go Back
+                                    </button></a>
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                 <tr>
@@ -51,6 +54,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                                {{$modules->links()}}
                         </div>
                         </div>
                     </div>
@@ -75,7 +79,7 @@
                         @method('POST')
                         <div class="form-group">
                             <label for="modulename" class="col-form-label">Module Name:</label>
-                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="20" placeholder="E.g Marketing, for Business GCSE" required>
+                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="30" placeholder="E.g Marketing, for Business GCSE" required>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-form-label">Description:</label>
