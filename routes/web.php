@@ -9,6 +9,7 @@ use App\Http\Controllers\student\PastTestsController;
 use App\Http\Controllers\student\VerificationController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\SubModuleController;
 use App\Http\Controllers\teacher\TeacherAnswerController;
 use App\Http\Controllers\teacher\TeacherQuestionController;
 use App\Http\Controllers\teacher\TeacherTestController;
@@ -37,6 +38,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
     Route::resource('/subjects', SubjectController::class);
 
     Route::resource('/module', ModuleController::class);
+
+    Route::resource('/submodule', SubModuleController::class);
 
 
     Route::controller(FileUploadController::class)->group(function () {

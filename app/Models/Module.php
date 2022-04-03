@@ -30,18 +30,10 @@ class Module extends Model
     }
 
     /**
-     * Get the resources for the module.
+     * Get the submodules for the module.
      */
-    public function resource(): HasMany
+    public function submodules(): HasMany
     {
-        return $this->hasMany(Resource::class);
-    }
-
-    /**
-     * Get the tests for the module.
-     */
-    public function test(): HasMany
-    {
-        return $this->hasMany(Test::class);
+        return $this->hasMany(SubModule::class);
     }
 }

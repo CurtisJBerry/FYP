@@ -20,7 +20,7 @@ class FileUploadController extends Controller
             'description' => 'required',
             'user' => 'required',
             'filename' => 'required',
-            'module' => 'required',
+            'submodule' => 'required',
             'tags' => 'required',
 
         ]);
@@ -49,7 +49,7 @@ class FileUploadController extends Controller
             'filename' => 'required',
             'description' => 'required',
             'user' => 'required',
-            'module' => 'required',
+            'submodule' => 'required',
             'tags' => 'required',
 
         ]);
@@ -159,7 +159,7 @@ class FileUploadController extends Controller
 
         $resource->user_id = $request->user;
         $resource->description = $request->description;
-        $resource->module_id = $request->module;
+        $resource->submodule_id = $request->submodule;
         $resource->save();
 
         return $resource;

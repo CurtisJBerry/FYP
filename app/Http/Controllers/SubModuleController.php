@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Module;
+use App\Models\SubModule;
+use App\Models\Tag;
+use App\Models\Test;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class SubModuleController extends Controller
+{
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\SubModule $submodule
+     * @return \Illuminate\Http\Response
+     */
+    public function show(SubModule $submodule)
+    {
+
+        if (isset(Auth::user()->learner_type) && Auth::user()->user_type != 'admin'){
+            //if learner type is set, find resources and tags based on learner type
+            $tags = Tag::where('tag_name','=', Auth::user()->learner_type)->with(['resources' => function ($query) use ($submodule) {
+                $query->where('submodule_id',$submodule->id);
+            }])->get();
+
+
+        }else{
+            //if learner type is not set, get all resources and tags
+            $tags = Tag::with(['resources' => function ($query) use ($submodule) {
+                $query->where('submodule_id',$submodule->id)->groupBy('resource_id');
+            }])->get();
+
+
+        }
+
+        $tests = Test::where('submodule_id',$submodule->id)->get();
+
+        $alltags = Tag::all();
+
+        return view('module-content', ['submodule' => $submodule, 'tags' => $tags, 'tests' => $tests, 'alltags' => $alltags]);
+
+    }
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'modulename' => 'required',
+            'description' => 'required',
+            'subject' => 'required',
+
+        ]);
+
+        $module = Module::where('module_name', $request->modulename);
+
+        if ($module->count()){
+            return back()->dangerBanner('A Module with this name already exists, please try another name.');
+        }else{
+            $module = new Module;
+
+            $module->module_name = $request->modulename;
+            $module->subject_id = $request->subject;
+            $module->description = $request->description;
+
+            $module->save();
+
+
+            return back()->banner('Module added successfully.');
+        }
+
+    }
+}

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('View a Module: '.$module->module_name) }}
+            {{ __('View a Sub Module: '.$submodule->submodule_name) }}
         </h2>
     </x-slot>
 
@@ -9,8 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="font-semibold text-xl text-gray-800 leading-tight">{{ $module->module_name }}</h3>
-                    <p> {{ $module->description }}</p>
+                    <h3 class="font-semibold text-xl text-gray-800 leading-tight">{{ $submodule->submodule_name }}</h3>
+                    <p> {{ $submodule->description }}</p>
                 </div>
 
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -94,7 +94,7 @@
 
                                                                 <input type="hidden" name="user" value="{{ Auth::user()->id }}">
 
-                                                                <input type="hidden" name="module" value="{{ $module->id }}">
+                                                                <input type="hidden" name="submodule" value="{{ $submodule->id }}">
                                                             </div>
 
                                                             <div class="form-group">
@@ -135,7 +135,7 @@
                     <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
                             Go Back
                         </button></a>
-                    <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$module->module_name}}</h3>
+                    <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$submodule->submodule_name}}</h3>
                     @if($tests->count())
                         @foreach($tests as $test)
                             <h3> {{ $test->test_name }}</h3>
@@ -178,7 +178,7 @@
 
                             <input type="hidden" name="user" value="{{ Auth::user()->id }}">
 
-                            <input type="hidden" name="module" value="{{ $module->id }}">
+                            <input type="hidden" name="submodule" value="{{ $submodule->id }}">
                         </div>
 
                         <div class="form-group">
