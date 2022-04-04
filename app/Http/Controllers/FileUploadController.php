@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Changelog;
 use App\Models\Resource;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 class FileUploadController extends Controller
@@ -25,19 +28,31 @@ class FileUploadController extends Controller
 
         ]);
 
-
         $extension = $request->file->extension();
-        $path = $request->file('file')->storeAs('files/', $request->filename.".".$extension, 'public');
 
-        //values set in extracted method
-        $resource = $this->getResource($request, $extension, $path);
+        $resource = Resource::where('resource_name', $request->filename.".".$extension);
+
+        if ($resource->count()) {
+            return back()->dangerBanner('A File with this name already exists, please try another name.');
+        }else{
+
+            $extension = $request->file->extension();
+
+            $path = $request->file('file')->move(public_path('storage/files'), $request->filename.".".$extension);
 
 
-        foreach($request->tags as $tag){
-            $resource->tags()->attach($resource->id, ['tag_id' => $tag]);
+            //values set in extracted method
+            $resource = $this->getResource($request, $extension, $path);
+
+
+            foreach($request->tags as $tag){
+                $resource->tags()->attach($resource->id, ['tag_id' => $tag]);
+            }
+
+            return back()->banner('File added successfully.');
+
         }
 
-        return back()->banner('File added successfully.');
 
     }
 
@@ -56,17 +71,29 @@ class FileUploadController extends Controller
 
 
         $file = Resource::find($id);
+
         if($request->file){
 
-            //find and delete existing file
-            Storage::disk('public')->delete('/files/'.$file->resource_name);
+            //find and delete existing file in storage
+            File::delete(public_path('/storage/files/'.$file->resource_name));
+
+            //delete file model
             $file->delete();
 
             $extension = $request->file->extension();
-            $path = $request->file('file')->storeAs('public/files/', $request->filename.".".$extension);
+
+            $path = $request->file('file')->move(public_path('storage/files/'), $request->filename.".".$extension);
 
             //values set in extracted method
             $resource = $this->getResource($request, $extension, $path);
+
+            //remove existing tags
+            $resource->tags()->detach();
+
+            //add updated tags
+            foreach($request->tags as $tag){
+                $resource->tags()->attach($resource->id, ['tag_id' => $tag]);
+            }
 
         }else{
 
@@ -74,21 +101,22 @@ class FileUploadController extends Controller
             $extension = pathinfo($file->resource_name, PATHINFO_EXTENSION);
 
             //find and edit existing file name
-            Storage::move('public/files/'.$file->resource_name, 'public/files/'.$request->filename.".".$extension);
+            rename(public_path('storage/files/'.$file->resource_name), public_path('storage/files/'.$request->filename.".".$extension));
 
             $file->resource_name = $request->filename.".".$extension;
-            $file->resource_path = 'public/files/'.$request->filename.".".$extension;
+            $file->resource_path = public_path('storage/files/'.$request->filename.".".$extension);
 
             $file->description = $request->description;
             $file->save();
-        }
 
-        //remove existing tags
-        $file->tags()->detach();
+            //remove existing tags
+            $file->tags()->detach();
 
-        //add updated tags
-        foreach($request->tags as $tag){
-            $file->tags()->attach($file->id, ['tag_id' => $tag]);
+            //add updated tags
+            foreach($request->tags as $tag){
+                $file->tags()->attach($file->id, ['tag_id' => $tag]);
+            }
+
         }
 
         return back()->banner('File updated successfully.');
@@ -103,15 +131,15 @@ class FileUploadController extends Controller
         $log->resource_id = $id;
         $log->save();
 
+        $extension = pathinfo(public_path('/storage/files/'.$name), PATHINFO_EXTENSION);
 
-
-        //$filepath = storage_path('app/public/files/'.$name);
-
-        return view('view-file', compact('name'));
+        if (File::exists(public_path('/storage/files/'.$name))){
+            return view('view-file', compact('name', 'extension'));
+        }else{
+            return back()->dangerBanner('File not found!');
+        }
 
     }
-
-
 
     public function download($name, $id)
     {
@@ -122,7 +150,7 @@ class FileUploadController extends Controller
         $log->save();
 
 
-        $filepath = storage_path('app/public/files/'.$name);
+        $filepath = public_path('/storage/files/'.$name);
 
         return response()->download($filepath, $name);
 
@@ -134,7 +162,7 @@ class FileUploadController extends Controller
 
         $toDelete = Resource::find($resource);
 
-        Storage::disk('public')->delete('/files/'.$toDelete->resource_name);
+        File::delete(public_path('/storage/files/'.$toDelete->resource_name));
 
         $toDelete->delete();
 
@@ -146,10 +174,10 @@ class FileUploadController extends Controller
     /**
      * @param Request $request
      * @param $extension
-     * @param bool|string $path
+     * @param $path
      * @return Resource
      */
-    public function getResource(Request $request, $extension, bool|string $path): Resource
+    public function getResource(Request $request, $extension, $path): Resource
     {
         $resource = new Resource;
 

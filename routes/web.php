@@ -42,6 +42,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
     Route::resource('/submodule', SubModuleController::class);
 
 
+    Route::get('/get-video/{name}', [FileUploadController::class, 'getVideo'])->name('get-video');
+
     Route::controller(FileUploadController::class)->group(function () {
 
         Route::get('/download/{name}/{id}','download')->name('file-download');

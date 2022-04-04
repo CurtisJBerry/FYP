@@ -100,7 +100,7 @@
                                                             <div class="form-group">
                                                                 <div class="form-group">
                                                                     <label for="tags" class="col-form-label">Edit Tags for Learner Types: Use ctrl and click for multiple</label>
-                                                                    <select name="tags[]" id="tags" class="form-control" multiple>
+                                                                    <select name="tags[]" id="tags" class="form-control" multiple required>
                                                                         @foreach($alltags as $tag)
                                                                             <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
                                                                         @endforeach
