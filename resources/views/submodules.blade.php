@@ -68,29 +68,29 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add a new Module</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add a new Sub Module</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('module.store') }}" method="POST">
+                    <form action="{{ route('submodule.store') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="form-group">
-                            <label for="modulename" class="col-form-label">Module Name:</label>
-                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="30" placeholder="E.g Marketing, for Business GCSE" required>
+                            <label for="submodulename" class="col-form-label">Module Name:</label>
+                            <input type="text" class="form-control" id="submodulename" name="submodulename" maxlength="30" placeholder="E.g Marketing, for Business GCSE" required>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-form-label">Description:</label>
                             <textarea class="form-control" id="description" name="description" placeholder="A short outline of what the module involves" required></textarea>
                         </div>
 
-                        <input type="hidden" name="subject" value="{{$module->id}}">
+                        <input type="hidden" name="module" value="{{$module->id}}">
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Add Module</button>
+                            <button type="submit" class="btn btn-success">Add Sub Module</button>
                         </div>
                     </form>
                 </div>

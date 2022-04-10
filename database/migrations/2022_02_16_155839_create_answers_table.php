@@ -18,7 +18,7 @@ class CreateAnswersTable extends Migration
             $table->foreignId('question_id')
                 ->constrained('questions')
                 ->onDelete('cascade');
-            $table->string('answer_text',20);
+            $table->text('answer_text');
             $table->char('correct',1);
             $table->timestamps();
         });

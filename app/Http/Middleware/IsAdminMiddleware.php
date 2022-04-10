@@ -19,10 +19,14 @@ class IsAdminMiddleware
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-
-        if ($role == 'admin' && Auth::user()->user_type != 'admin'){
-            abort(403);
+        if (!Auth::user()){
+            return redirect('/');
+        }else{
+            if ($role == 'admin' && Auth::user()->user_type != 'admin'){
+                abort(403);
+                redirect()->back();
+            }
+            return $next($request);
         }
-        return $next($request);
     }
 }

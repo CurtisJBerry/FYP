@@ -14,7 +14,8 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'description' => $this->faker->realText('20'),
+            'type' => $this->faker->randomElement(['reading', 'auditory', 'visual', 'kinesthetic']),
         ];
     }
 }

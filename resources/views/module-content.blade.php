@@ -21,6 +21,17 @@
                     </button>
                     @endif
                     <p> PDF and Image files will open in browser, any other type of file will download automatically when clicking view.</p>
+                    @if(Auth::user()->user_type == "user")
+                        @if($showall == "true")
+                            <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'false']) }}"><button type="button" class="btn btn-success float-right">
+                                Toggle All On
+                            </button></a>
+                        @else
+                            <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'true']) }}"><button type="button" class="btn btn-success float-right">
+                                    Toggle All Off
+                                </button></a>
+                            @endif
+                    @endif
                     <div class="grid grid-cols-6">
                         @if($tags->count())
                             @foreach($tags as $tag)
@@ -119,8 +130,6 @@
                                             </div>
                                         </div>
                                     @endif
-
-
                                 @endforeach
                             @endforeach
                         @else
@@ -169,7 +178,7 @@
                         <div class="form-group">
                             <div class="form-group">
                                 <label for="filename" class="col-form-label">File Name:</label>
-                                <input type="text" class="form-control" id="filename" name="filename" maxlength="20" required>
+                                <input type="text" class="form-control" id="filename" name="filename" maxlength="30" required>
                             </div>
                         </div>
                         <div class="form-group">

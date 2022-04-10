@@ -5,6 +5,7 @@ namespace App\Http\Controllers\teacher;
 use App\Http\Controllers\Controller;
 use App\Models\Module;
 use App\Models\Question;
+use App\Models\SubModule;
 use App\Models\Test;
 use Illuminate\Http\Request;
 
@@ -18,9 +19,9 @@ class TeacherTestController extends Controller
     public function index() {
 
         $tests = Test::paginate(10);
-        $modules = Module::with('subject')->get();
+        $submodules = SubModule::with('module.subject')->get();
 
-        return view('teacher/view-all-tests', compact('tests','modules'));
+        return view('teacher/view-all-tests', compact('tests','submodules'));
 
     }
 
@@ -45,7 +46,7 @@ class TeacherTestController extends Controller
 
         $request->validate([
             'testname' => 'required',
-            'module' => 'required',
+            'submodule' => 'required',
 
         ]);
 
@@ -58,7 +59,7 @@ class TeacherTestController extends Controller
             $test = new Test;
 
             $test->test_name = $request->testname;
-            $test->module_id = $request->module;
+            $test->submodule_id = $request->submodule;
 
             $test->save();
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SubModule;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,10 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             ModuleSeeder::class,
             TagSeeder::class,
+            SubModuleSeeder::class,
+            TestSeeder::class,
+            QuestionSeeder::class,
+            AnswerSeeder::class,
         ]);
     }
 }

@@ -4,7 +4,10 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AnswerFactory extends Factory
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SubModule>
+ */
+class SubModuleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,8 +17,8 @@ class AnswerFactory extends Factory
     public function definition()
     {
         return [
-            'answer_text' => $this->faker->text(),
-            'correct' => $this->faker->randomLetter('1'),
+            'submodule_name' => $this->faker->realText('20'),
+            'description' => $this->faker->realText('20'),
         ];
     }
 }

@@ -23,6 +23,8 @@
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Module Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sub Module Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Questions</th>
                                         <th scope="col" class="relative px-6 py-3">
                                     </tr>
                                     </thead>
@@ -31,8 +33,10 @@
                                         @foreach($tests as $test)
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->test_name}}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->module->subject->subject_name}}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->module->module_name}}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->subject->subject_name}}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / 10</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                     <a href="{{ route('teacher-tests.show', $test->id) }}">
                                                        <button class="btn btn-primary">View</button>
@@ -84,10 +88,10 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group">
-                                <label for="module" class="col-form-label">Select the Module the test will be for:</label>
-                                <select name="module" id="module" class="form-control" size="1" required>
-                                    @foreach($modules as $module)
-                                        <option value="{{$module->id}}">{{$module->module_name}} - {{$module->subject->subject_name}}</option>
+                                <label for="submodule" class="col-form-label">Select the Sub Module the test will be for:</label>
+                                <select name="submodule" id="submodule" class="form-control" size="3" required>
+                                    @foreach($submodules as $submodule)
+                                        <option value="{{$submodule->id}}">{{$submodule->submodule_name}} - {{$submodule->module->module_name}} -  {{$submodule->module->subject->subject_name}}</option>
                                     @endforeach
 
                                 </select>
@@ -96,7 +100,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Add Question</button>
+                            <button type="submit" class="btn btn-success">Add Test</button>
                         </div>
                     </form>
                 </div>

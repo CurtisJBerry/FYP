@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Answer;
 use App\Models\Module;
 use App\Models\Question;
 use App\Models\Test;
@@ -36,6 +37,72 @@ class TeacherQuestionController extends Controller
 
             return back()->banner('Question added successfully.');
         }
+    }
+
+    public function show($id){
+
+        $question = Question::where('id',$id)->with('answers')->get();
+
+
+        return view('teacher/view-question',['question' => $question]);
+
+    }
+
+    public function update(Request $request, $id){
+
+        $request->validate([
+            'question' => 'required',
+            'row.*.answers' => 'required',
+            'row.*.correct' => 'required',
+
+        ]);
+
+        $correct = $request->correct;
+        $answers = $request->answers;
+
+
+        $question = Question::findorFail($id);
+        $answerModels = Answer::where('question_id', $id)->get();
+
+        if($question){
+            $question->update([
+                'description' => $request->question,
+            ]);
+        }else{
+            return back()->dangerBanner('Question not found, please try again.');
+        }
+
+
+        if (count(array_unique($answers, SORT_STRING)) < count($answers)){
+
+            return back()->dangerBanner('Answers cannot have the same text, please try again.');
+
+        }elseif(count(array_keys($correct, "y")) > 1 or count(array_keys($correct, "n")) == 3){
+
+            return back()->dangerBanner('An Answer can only and must have one correct answer, please try again.');
+        }
+
+        //for each form answer
+        foreach ($request->answers as $key => $answer){
+            $answerModels[$key]->answer_text = $answers[$key];
+            $answerModels[$key]->correct = $correct[$key];
+            $answerModels[$key]->question_id = $id;
+            $answerModels[$key]->save();
+        }
+
+
+
+        return back()->banner('Question updated successfully.');
+    }
+
+    public function destroy($id){
+
+        $question = Question::where('id',$id)->with('answers')->get();
+
+        $question->delete();
+
+        return back()->banner('Question successfully deleted.');
+
     }
 
 }

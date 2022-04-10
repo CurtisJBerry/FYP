@@ -24,7 +24,7 @@ class Test extends Model
     /**
      * Get the module that owns the test.
      */
-    public function module(): BelongsTo
+    public function submodule(): BelongsTo
     {
         return $this->belongsTo(SubModule::class);
     }

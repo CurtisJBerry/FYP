@@ -18,9 +18,13 @@ class IsTeacherMiddleware
      */
     public function handle(Request $request, Closure $next, String $role)
     {
-        if ($role == 'teacher' && Auth::user()->user_type != 'teacher'){
-            abort(403);
+        if (!Auth::user()){
+            return redirect('/');
+        }else {
+            if ($role == 'teacher' && Auth::user()->user_type != 'teacher') {
+                abort(403);
+            }
+            return $next($request);
         }
-        return $next($request);
     }
 }

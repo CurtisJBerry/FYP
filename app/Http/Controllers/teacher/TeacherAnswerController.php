@@ -12,28 +12,42 @@ class TeacherAnswerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'questionid' => 'required',
-            'answer' => 'required',
-            'correct' => 'required',
+            'row.*.questionid' => 'required',
+            'row.*.answers' => 'required',
+            'row.*.correct' => 'required',
 
         ]);
 
-        $answer = Answer::where('answer_text', $request->answer)->where('question_id', $request->questionid)->get();
+        $answers = $request->answers;
+        $correct = $request->correct;
+        $questionid = $request->questionid;
 
+        if (count(array_unique($answers, SORT_STRING)) < count($answers)){
 
-        if ($answer->count()){
-            return back()->dangerBanner('An Answer with this text already exists, please try again.');
-        }else{
-            $answer = new Answer;
+            return back()->dangerBanner('Answers cannot have the same text, please try again.');
 
-            $answer->question_id = $request->questionid;
-            $answer->answer_text = $request->answer;
-            $answer->correct = $request->correct;
+        }elseif(count(array_keys($correct, "y")) > 1){
 
-            $answer->save();
-
-
-            return back()->banner('Answer added successfully.');
+            return back()->dangerBanner('An Answer can only have one correct answer, please try again.');
         }
+
+        foreach ($request->answers as $key => $answer){
+
+            $answer = Answer::where('answer_text', $answer)->where('question_id', $questionid[$key])->get();
+
+            if ($answer->count()){
+                return back()->dangerBanner('An Answer with this text already exists, please try again.');
+            }else{
+                $answer = new Answer;
+
+                $answer->question_id = $questionid[$key];
+                $answer->answer_text = $answers[$key];
+                $answer->correct = $correct[$key];
+
+                $answer->save();
+            }
+        }
+
+        return back()->banner('Answers added successfully.');
     }
 }

@@ -34,7 +34,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="ml-4">
-                                                        <div class="text-sm font-medium text-gray-900"><a href="{{ route('module.show', $module->id) }}">{{ $module->module_name }}</a></div>
+                                                        <div class="text-sm font-medium text-gray-900"><a href="{{ route('/sub.show', ['submodule' => $module->id, 'showall' => "false"]) }}">{{ $module->module_name }}</a></div>
                                                     </div>
                                                 </div>
                                             </td>
