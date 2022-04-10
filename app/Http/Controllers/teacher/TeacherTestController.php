@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Module;
 use App\Models\Question;
 use App\Models\SubModule;
+use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,9 @@ class TeacherTestController extends Controller
 
         $questions = Question::where('test_id', $id)->with('answers')->get();
 
-        return view('teacher/view-test', compact('test', 'questions'));
+        $alltags = Tag::all();
+
+        return view('teacher/view-test', compact('test', 'questions', 'alltags'));
 
     }
 

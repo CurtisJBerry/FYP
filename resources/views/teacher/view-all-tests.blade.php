@@ -33,9 +33,15 @@
                                         @foreach($tests as $test)
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->test_name}}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->subject->subject_name}}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                                @if(isset($test->submodule->module->subject->subject_name))
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->subject->subject_name}}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                                @else
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">No subject name set.</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">No module name set.</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">No submodule name set.</td>
+                                                @endif
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / 10</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                     <a href="{{ route('teacher-tests.show', $test->id) }}">

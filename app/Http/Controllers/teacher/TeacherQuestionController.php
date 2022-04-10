@@ -97,7 +97,7 @@ class TeacherQuestionController extends Controller
 
     public function destroy($id){
 
-        $question = Question::where('id',$id)->with('answers')->get();
+        $question = Question::find($id);
 
         $question->delete();
 

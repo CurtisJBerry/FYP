@@ -29,8 +29,30 @@
                                     <tbody class="bg-white divide-y divide-gray-200">
                                     @if($questions->count())
                                         @foreach($questions as $question)
+                                            @include('file-upload-modals')
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$question->description}}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                    <p>{{$question->description}}</p>
+                                                    @if(isset($question->resource->resource_name))
+                                                            @if($extension = pathinfo(public_path('/storage/files/'.$question->resource->resource_name), PATHINFO_EXTENSION) == 'mp4')
+                                                                <div class="p-6 bg-white border-b border-gray-200">
+                                                                    <video preload="auto" width="100%" controls>
+                                                                        <source src="{{ asset('storage/files/'.$question->resource->resource_name)}}" type="video/mp4">
+                                                                        Your browser does not support the video tag.
+                                                                    </video>
+                                                                </div>
+                                                            @else
+                                                                <iframe width="300" height="300" src="{{ asset('storage/files/'.$question->resource->resource_name) }}" style="width: 300px;height: 200px; margin: 0;padding: 0;border: 0;display: block;"></iframe>
+                                                                <button type="button" class="btn btn-primary float-left inline" data-toggle="modal" data-target="#editFileModal{{$question->resource->id}}">
+                                                                    Edit
+                                                                </button>
+                                                            @endif
+                                                    @else
+                                                        <button type="button" class="btn btn-success float-left inline" data-toggle="modal" data-target="#addFileModal{{Auth::user()->id}}">
+                                                            Add a resource
+                                                        </button>
+                                                    @endif
+                                                </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                     @foreach($question->answers as $answer)
                                                         @if($answer->correct == "y")
@@ -43,7 +65,6 @@
                                                             <p>{{$answer->answer_text}}</p>
                                                         @endif
                                                     @endforeach
-
                                                     @if($question->answers->count() < 3)
                                                             <button type="button" class="btn btn-success float-right inline" data-toggle="modal" data-target="#addAnswerModal{{$question->id}}">
                                                                 Add Answer
@@ -53,8 +74,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm inline-flex">
                                                     <div style="padding: 5px">
                                                         <a href="{{ route('teacher-question.show', $question->id) }}"><button type="button" class="btn btn-primary">
-                                                            Edit
-                                                            </button></a>
+                                                            Edit</button></a>
                                                     </div>
 
                                                     <div style="padding: 5px">
@@ -64,77 +84,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
-                                            <!-- Add Answer Modal -->
-                                            <div class="modal fade" id="deleteQuestionModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Delete a Question</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="{{ route('teacher-answer.store') }}" method="POST">
-                                                                <p>Are you sure you want to delete this question?</p>
-                                                        </div>
-
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Add Answer Modal -->
-                                            <div class="modal fade" id="addAnswerModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Add an Answer for this Question</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="{{ route('teacher-answer.store') }}" method="POST">
-                                                                @csrf
-                                                                @method('POST')
-                                                                @for($i = 1; $i <= 3; $i++)
-                                                                <div class="form-group">
-                                                                    <div class="form-group">
-                                                                        <label for="answers[]" class="col-form-label">Answer text:</label>
-                                                                        <input type="text" class="form-control" id="answers[]" name="answers[]" required>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="form-group">
-                                                                        <label for="correct" class="col-form-label">Is this the correct answer?</label>
-                                                                        <select name="correct[]" id="type" class="form-control" size="1" required>
-                                                                            <option value="y">Yes</option>
-                                                                            <option value="n">No</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input type="hidden" class="form-control" id="questionid" name="questionid[]" value="{{$question->id}}">
-
-                                                                @endfor
-
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-success">Add Test</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @include('teacher/test-create-modals')
                                         @endforeach
                                     @else
                                         <tr>
@@ -156,49 +106,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Add Question Modal -->
-    <div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add a Question for this test</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('teacher-question.store') }}" method="POST">
-                        @csrf
-                        @method('POST')
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="question" class="col-form-label">Question text:</label>
-                                <textarea class="form-control" id="question" name="question" placeholder="Write the question here..." required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="type" class="col-form-label">Select the Question type:</label>
-                                <select name="type" id="type" class="form-control" size="1" required>
-                                    <option value="reading">Reading</option>
-                                    <option value="auditory">Auditory</option>
-                                    <option value="visual">Visual</option>
-                                    <option value="kinesthetic">Kinesthetic</option>
-                                </select>
-                            </div>
-
-                            <input type="hidden" class="form-control" id="testid" name="testid" value="{{$test->id}}">
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Add Question</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </x-app-layout>

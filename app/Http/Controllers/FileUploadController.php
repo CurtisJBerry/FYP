@@ -23,7 +23,8 @@ class FileUploadController extends Controller
             'description' => 'required',
             'user' => 'required',
             'filename' => 'required',
-            'submodule' => 'required',
+            'submodule' => 'nullable',
+            'question_id' => 'nullable',
             'tags' => 'required',
 
         ]);
@@ -64,7 +65,8 @@ class FileUploadController extends Controller
             'filename' => 'required',
             'description' => 'required',
             'user' => 'required',
-            'submodule' => 'required',
+            'submodule' => 'nullable',
+            'question_id' => 'nullable',
             'tags' => 'required',
 
         ]);
@@ -182,12 +184,13 @@ class FileUploadController extends Controller
         $resource = new Resource;
 
 
-        $resource->resource_name = $request->filename . "." . $extension;
+        $resource->resource_name = $request->filename;
         $resource->resource_path = $path;
 
         $resource->user_id = $request->user;
         $resource->description = $request->description;
         $resource->submodule_id = $request->submodule;
+        $resource->question_id = $request->question_id;
         $resource->save();
 
         return $resource;
