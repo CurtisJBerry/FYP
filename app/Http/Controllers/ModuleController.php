@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use App\Models\Resource;
 use App\Models\Subject;
+use App\Models\SubModule;
 use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -15,38 +16,20 @@ class ModuleController extends Controller
 {
 
     /**
-     * Display the specified resource.
+     * Display a listing of the resource.
      *
      * @param \App\Models\Module $module
      * @return \Illuminate\Http\Response
      */
-    public function show(Module $module)
-    {
-
-        if (isset(Auth::user()->learner_type) && Auth::user()->user_type != 'admin'){
-            //if learner type is set, find resources and tags based on learner type
-            $tags = Tag::where('tag_name','=', Auth::user()->learner_type)->with(['resources' => function ($query) use ($module) {
-                $query->where('module_id',$module->id);
-            }])->get();
+    public function show(Module $module) {
 
 
-        }else{
-            //if learner type is not set, get all resources and tags
-            $tags = Tag::with(['resources' => function ($query) use ($module) {
-                $query->where('module_id',$module->id)->groupBy('resource_id');
-            }])->get();
+        $submodules = SubModule::where('module_id',$module->id)->paginate(10);
 
-
-        }
-
-
-        $tests = Test::where('module_id',$module->id);
-
-        $alltags = Tag::all();
-
-        return view('module-content', ['module' => $module, 'tags' => $tags, 'tests' => $tests, 'alltags' => $alltags]);
+        return view('submodules',['module' => $module], ['submodules' => $submodules]);
 
     }
+
 
     public function store(Request $request)
     {
@@ -60,7 +43,7 @@ class ModuleController extends Controller
 
         $module = Module::where('module_name', $request->modulename);
 
-        if ($module){
+        if ($module->count()){
             return back()->dangerBanner('A Module with this name already exists, please try another name.');
         }else{
             $module = new Module;

@@ -28,9 +28,9 @@ class Resource extends Model
     /**
      * Get the module that owns the resource.
      */
-    public function module(): BelongsTo
+    public function submodule(): BelongsTo
     {
-        return $this->belongsTo(Module::class);
+        return $this->belongsTo(SubModule::class);
     }
 
     /**

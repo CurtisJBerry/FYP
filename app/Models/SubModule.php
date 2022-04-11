@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Test extends Model
+class SubModule extends Model
 {
     use HasFactory;
 
@@ -18,30 +17,31 @@ class Test extends Model
      */
     protected $fillable = [
 
-        'test_name',
+        'submodule_name',
+        'description',
     ];
 
     /**
-     * Get the module that owns the test.
+     * Get the module that owns the submodule.
      */
-    public function submodule(): BelongsTo
+    public function module()
     {
-        return $this->belongsTo(SubModule::class);
+        return $this->belongsTo(Module::class);
     }
 
     /**
      * Get the resources for the module.
      */
-    public function questions(): HasMany
+    public function resource(): HasMany
     {
-        return $this->hasMany(Question::class);
+        return $this->hasMany(Resource::class);
     }
 
     /**
-     * The user that belongs to the test.
+     * Get the tests for the module.
      */
-    public function users()
+    public function test(): HasMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(Test::class);
     }
 }

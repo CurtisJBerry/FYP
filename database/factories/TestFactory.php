@@ -14,7 +14,7 @@ class TestFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'test_name' => $this->faker->realText('20'),
         ];
     }
 }

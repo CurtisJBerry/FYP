@@ -31,7 +31,8 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject) {
 
-        $modules = Subject::find($subject->id)->modules;
+
+        $modules = Module::where('subject_id',$subject->id)->paginate(10);
 
         return view('modules', ['subject' => $subject] , ['modules' => $modules]);
 
@@ -50,7 +51,7 @@ class SubjectController extends Controller
 
         $subject = Subject::where('subject_name', $request->subjectname);
 
-        if ($subject){
+        if ($subject->count()){
             return back()->dangerBanner('A Subject with this name already exists, please try another name.');
         }else{
 

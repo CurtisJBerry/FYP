@@ -20,6 +20,7 @@
                         {{ __('View Subjects') }}
                     </x-jet-nav-link>
 
+                    <!-- User only links -->
                     @if(Auth::user()->user_type == "user")
                         <x-jet-nav-link href="{{ route('past-tests.index') }}" :active="request()->routeIs('past-tests.index')">
                             {{ __('View Past Test Scores') }}
@@ -28,9 +29,18 @@
                         <x-jet-nav-link href="{{ route('user.verification') }}" :active="request()->routeIs('user.verification')">
                             {{ __('Request Teacher Verification') }}
                         </x-jet-nav-link>
-
                     @endif
 
+                <!-- Teacher only links -->
+                    @if(Auth::user()->user_type == "teacher")
+                        <x-jet-nav-link href="{{ route('teacher-tests.index') }}" :active="request()->routeIs('teacher-tests.index')">
+                            {{ __('View All Tests') }}
+                        </x-jet-nav-link>
+                    @endif
+
+
+
+                <!-- Admin only links -->
                     @if (Auth::user()->user_type == 'admin')
                         <x-jet-nav-link href="{{ route('admin-users.index') }}" :active="request()->routeIs('admin-users.index')">
                             {{ __('Manage Users') }}

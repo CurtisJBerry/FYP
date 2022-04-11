@@ -11,11 +11,15 @@
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <div class="p-6 bg-white">
                             @if(Auth::user()->user_type !== "user")
                                 <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addModuleModal">
                                     Add Module
                                 </button>
                             @endif
+                                <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
+                                        Go Back
+                                    </button></a>
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                 <tr>
@@ -30,11 +34,11 @@
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="ml-4">
-                                                        <div class="text-sm font-medium text-gray-900"><a href="{{ route('module.show', $module->id) }}">{{ $module->module_name }}</a></div>
+                                                        <div class="text-sm font-medium text-gray-900"><a href="{{ route('/sub.show', ['submodule' => $module->id, 'showall' => "false"]) }}">{{ $module->module_name }}</a></div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $module->description }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" style="word-wrap: break-word; white-space: normal;">{{ $module->description }}</td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -50,6 +54,8 @@
                                 @endif
                                 </tbody>
                             </table>
+                                {{$modules->links()}}
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -73,7 +79,7 @@
                         @method('POST')
                         <div class="form-group">
                             <label for="modulename" class="col-form-label">Module Name:</label>
-                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="20" placeholder="E.g Marketing, for Business GCSE" required>
+                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="30" placeholder="E.g Marketing, for Business GCSE" required>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-form-label">Description:</label>

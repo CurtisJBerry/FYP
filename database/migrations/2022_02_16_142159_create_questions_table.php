@@ -15,8 +15,8 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('description',30);
-            $table->enum('type',['text','image','audio','interactive']);
+            $table->text('description');
+            $table->enum('type',['reading','auditory','visual','kinesthetic']);
             $table->foreignId('test_id')
                 ->references('id')
                 ->on('tests')
