@@ -43,6 +43,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
 
     Route::get('/submodule/show/{submodule}/{showall}',[SubModuleController::class, 'show'])->name('/sub.show');
 
+
+    //File routes
     Route::controller(FileUploadController::class)->group(function () {
 
         Route::get('/download/{name}/{id}','download')->name('file-download');
