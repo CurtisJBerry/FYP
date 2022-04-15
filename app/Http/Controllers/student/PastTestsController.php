@@ -16,7 +16,8 @@ class PastTestsController extends Controller
      */
     public function index() {
 
-        $user = User::where('id','=', Auth::user()->id)->paginate(5);
+        $user = User::where('id','=', Auth::user()->id)->with('tests')->paginate(5);
+
 
         return view('student/past-tests', ['user' => $user]);
 

@@ -13,10 +13,13 @@
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
                                 @if(Auth::user()->user_type !== "user")
-                                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addTestModal">
+                                    <button type="button" class="btn btn-success float-right inline-flex" data-toggle="modal" data-target="#addTestModal">
                                         Add Test
                                     </button>
                                 @endif
+                                    <a href="{{ route('home') }}"><button type="button" class="btn btn-primary float-right inline-flex">
+                                            Go Back
+                                        </button></a>
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
@@ -42,9 +45,9 @@
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">No module name set.</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">No submodule name set.</td>
                                                 @endif
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / 10</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / {{config('global.maxquestions')}}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                    <a href="{{ route('teacher-tests.show', $test->id) }}">
+                                                    <a href="{{ route('/teacher-tests.show', $test->id) }}">
                                                        <button class="btn btn-primary">View</button>
                                                     </a>
                                                 </td>

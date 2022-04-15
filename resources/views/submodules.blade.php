@@ -17,7 +17,7 @@
                                         Add Sub Module
                                     </button>
                                 @endif
-                                <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
+                                <a href="{{ route('subjects.show', $subject->id) }}"><button type="button" class="btn btn-primary float-right">
                                         Go Back
                                     </button></a>
                                 <table class="w-full">
@@ -34,7 +34,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
                                                         <div class="ml-4">
-                                                            <div class="text-sm font-medium text-gray-900"><a href="{{ route('submodule.show', $submodule->id) }}">{{ $submodule->submodule_name }}</a></div>
+                                                            <div class="text-sm font-medium text-gray-900"><a href="{{ route('/sub.show', ['submodule' => $module->id, 'showall' => "false"]) }}">{{ $submodule->submodule_name }}</a></div>
                                                         </div>
                                                     </div>
                                                 </td>

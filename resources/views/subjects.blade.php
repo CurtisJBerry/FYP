@@ -17,7 +17,7 @@
                                     Add Subject
                                 </button>
                             @endif
-                                <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
+                                <a href="{{ route('home')}}"><button type="button" class="btn btn-primary float-right">
                                         Go Back
                                     </button></a>
                             <table class="w-full">

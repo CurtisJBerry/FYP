@@ -29,6 +29,7 @@ class FileUploadController extends Controller
 
         ]);
 
+
         $extension = $request->file->extension();
 
         $resource = Resource::where('resource_name', $request->filename.".".$extension);
@@ -184,7 +185,7 @@ class FileUploadController extends Controller
         $resource = new Resource;
 
 
-        $resource->resource_name = $request->filename;
+        $resource->resource_name = $request->filename.".".$extension;
         $resource->resource_path = $path;
 
         $resource->user_id = $request->user;
