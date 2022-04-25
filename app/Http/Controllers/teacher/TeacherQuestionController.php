@@ -41,7 +41,7 @@ class TeacherQuestionController extends Controller
 
     public function show($id){
 
-        $question = Question::where('id',$id)->with('answers')->get();
+        $question = Question::where('id',$id)->with('answers')->first();
 
 
         return view('teacher/view-question',['question' => $question]);
@@ -54,19 +54,29 @@ class TeacherQuestionController extends Controller
             'question' => 'required',
             'row.*.answers' => 'required',
             'row.*.correct' => 'required',
+            'row.*.type' => 'nullable',
+            'qtype' => 'required'
 
         ]);
 
         $correct = $request->correct;
         $answers = $request->answers;
-
+        $type = $request->type;
+        $correctcount = 0;
 
         $question = Question::findorFail($id);
         $answerModels = Answer::where('question_id', $id)->get();
 
+        foreach ($answerModels as $a){
+            if($a->correct == 'y'){
+                $correctcount += 1;
+            }
+        }
+
         if($question){
             $question->update([
                 'description' => $request->question,
+                'type' => $request->qtype,
             ]);
         }else{
             return back()->dangerBanner('Question not found, please try again.');
@@ -77,7 +87,7 @@ class TeacherQuestionController extends Controller
 
             return back()->dangerBanner('Answers cannot have the same text, please try again.');
 
-        }elseif(count(array_keys($correct, "y")) > 1 or count(array_keys($correct, "n")) == 3){
+        }elseif(count(array_keys($correct, "y")) > 1 or count(array_keys($correct, "n")) == config('global.maxanswers') or $correctcount == 1){
 
             return back()->dangerBanner('An Answer can only and must have one correct answer, please try again.');
         }
@@ -86,6 +96,7 @@ class TeacherQuestionController extends Controller
         foreach ($request->answers as $key => $answer){
             $answerModels[$key]->answer_text = $answers[$key];
             $answerModels[$key]->correct = $correct[$key];
+            $answerModels[$key]->type = $type[$key];
             $answerModels[$key]->question_id = $id;
             $answerModels[$key]->save();
         }

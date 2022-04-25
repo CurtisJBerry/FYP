@@ -26,7 +26,9 @@ class ModuleController extends Controller
 
         $submodules = SubModule::where('module_id',$module->id)->paginate(10);
 
-        return view('submodules',['module' => $module], ['submodules' => $submodules]);
+        $subject = Module::where('id', $module->id)->first();
+
+        return view('submodules',compact('module','submodules','subject'));
 
     }
 

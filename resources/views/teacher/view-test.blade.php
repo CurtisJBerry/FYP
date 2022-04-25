@@ -12,18 +12,22 @@
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
-                                @if($questions->count() < 10)
-                                    <button type="button" class="btn btn-success float-right inline" data-toggle="modal" data-target="#addQuestionModal">
+                                <h2 class="inline-flex"> Total questions for this test: {{$questions->count()}} / {{config('global.maxquestions')}}</h2>
+                                @if($questions->count() < config('global.maxquestions'))
+                                    <button type="button" class="btn btn-success inline-flex" data-toggle="modal" data-target="#addQuestionModal" style="padding-right: 10px">
                                         Add Question
                                     </button>
                                 @endif
-                                <h2> Total questions for this test: {{$questions->count()}} / 10</h2>
+                                <a href="{{ route('teacher-tests.index') }}"><button type="button" class="btn btn-primary float-right">
+                                        Go Back
+                                    </button></a>
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Question</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Answer</th>
-                                        <th scope="col" class="relative px-6 py-3">
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Answers</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Question Type</th>
+                                        <th scope="col" class="relative px-6 py-3"></th>
                                     </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -41,14 +45,24 @@
                                                                         Your browser does not support the video tag.
                                                                     </video>
                                                                 </div>
-                                                            @else
-                                                                <iframe width="300" height="300" src="{{ asset('storage/files/'.$question->resource->resource_name) }}" style="width: 300px;height: 200px; margin: 0;padding: 0;border: 0;display: block;"></iframe>
+                                                            @elseif($extension = pathinfo(public_path('/storage/files/'.$question->resource->resource_name), PATHINFO_EXTENSION) == 'jpg' || $extension == 'png')
+
+                                                                <img src="{{ asset('storage/files/'.$question->resource->resource_name) }}" style="width: 60%;height: 200px; margin: 0;padding: 0;border: none;display: block;" alt="Question image">
+
+                                                            @elseif($extension = pathinfo(public_path('/storage/files/'.$question->resource->resource_name), PATHINFO_EXTENSION) == 'mp3')
+                                                                <audio controls>
+                                                                    <source src="{{ asset('storage/files/'.$question->resource->resource_name) }}" type="audio/mpeg">
+                                                                    Your browser does not support the audio element.
+                                                                </audio>
+                                                            @endif
                                                                 <button type="button" class="btn btn-primary float-left inline" data-toggle="modal" data-target="#editFileModal{{$question->resource->id}}">
                                                                     Edit
                                                                 </button>
-                                                            @endif
+                                                                <button type="button" class="btn btn-danger float-left inline" data-toggle="modal" data-target="#deleteFileModal{{$question->resource->id}}">
+                                                                    Delete
+                                                                </button>
                                                     @else
-                                                        <button type="button" class="btn btn-success float-left inline" data-toggle="modal" data-target="#addFileModal{{Auth::user()->id}}">
+                                                        <button type="button" class="btn btn-success float-left inline" data-toggle="modal" data-target="#addFileModal{{$question->id}}">
                                                             Add a resource
                                                         </button>
                                                     @endif
@@ -65,11 +79,14 @@
                                                             <p>{{$answer->answer_text}}</p>
                                                         @endif
                                                     @endforeach
-                                                    @if($question->answers->count() < 3)
-                                                            <button type="button" class="btn btn-success float-right inline" data-toggle="modal" data-target="#addAnswerModal{{$question->id}}">
+                                                    @if($question->answers->count() < config('global.maxanswers'))
+                                                            <button type="button" class="btn btn-success float-right inline" data-toggle="modal" data-target="#addAnswerModal{{$question->id, $question->answers->count()}}">
                                                                 Add Answer
                                                             </button>
                                                     @endif
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                    <p>{{$question->type}}</p>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm inline-flex">
                                                     <div style="padding: 5px">

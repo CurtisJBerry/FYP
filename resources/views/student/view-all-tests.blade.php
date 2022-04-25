@@ -12,14 +12,9 @@
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
-                                @if(Auth::user()->user_type !== "user")
-                                    <button type="button" class="btn btn-success float-right inline-flex" data-toggle="modal" data-target="#addTestModal">
-                                        Add Test
-                                    </button>
-                                @endif
-                                    <a href="{{ route('home') }}"><button type="button" class="btn btn-primary float-right inline-flex">
-                                            Go Back
-                                        </button></a>
+                                <a href="{{ route('home') }}"><button type="button" class="btn btn-primary float-right inline-flex">
+                                        Go Back
+                                    </button></a>
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
@@ -47,8 +42,8 @@
                                                 @endif
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / {{config('global.maxquestions')}}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                    <a href="{{ route('/teacher-tests.show', $test->id) }}">
-                                                       <button class="btn btn-primary">View</button>
+                                                    <a href="{{ route('/user-test.show', $test->id) }}">
+                                                        <button class="btn btn-primary">View</button>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -70,48 +65,6 @@
                             {{$tests->links()}}
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Test Modal -->
-    <div class="modal fade" id="addTestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add a new Test</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('teacher-tests.store') }}" method="POST">
-                        @csrf
-                        @method('POST')
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="testname" class="col-form-label">Test Name:</label>
-                                <input type="text" class="form-control" id="testname" name="testname" maxlength="20" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label for="submodule" class="col-form-label">Select the Sub Module the test will be for:</label>
-                                <select name="submodule" id="submodule" class="form-control" size="3" required>
-                                    @foreach($submodules as $submodule)
-                                        <option value="{{$submodule->id}}">{{$submodule->submodule_name}} - {{$submodule->module->module_name}} -  {{$submodule->module->subject->subject_name}}</option>
-                                    @endforeach
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Add Test</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

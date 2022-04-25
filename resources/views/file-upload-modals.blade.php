@@ -1,3 +1,57 @@
+@if(isset($question->id))
+<!-- Add File Modal -->
+<div class="modal fade" id="addFileModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add a new file</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('file-upload') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label for="file" class="col-form-label">Add a image, video or sound</label>
+                        <input type="file" class="form-control" name="file" id="file" placeholder="Choose file" required accept=".jpg,.png,.mp4,.mp3">
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="filename" class="col-form-label">File Name:</label>
+                            <input type="text" class="form-control" id="filename" name="filename" maxlength="30" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Description:</label>
+                        <input type="text" class="form-control" id="description" name="description" required>
+
+                        <input type="hidden" name="user" value="{{ Auth::user()->id }}">
+
+                        <input type="hidden" name="question_id" value="{{ $question->id }}">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="tags" class="col-form-label">Add Tags for Learner Types: Use ctrl and click for multiple</label>
+                            <select name="tags[]" id="tags" class="form-control" multiple>
+                                @foreach($alltags as $tag)
+                                    <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Upload File</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@else
 <!-- Add File Modal -->
 <div class="modal fade" id="addFileModal{{Auth::user()->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -28,11 +82,7 @@
 
                         <input type="hidden" name="user" value="{{ Auth::user()->id }}">
 
-                        @if(isset($question->id))
-                            <input type="hidden" name="question_id" value="{{ $question->id }}">
-                        @else
-                            <input type="hidden" name="submodule" value="{{ $submodule->id }}">
-                        @endif
+                        <input type="hidden" name="submodule" value="{{ $submodule->id }}">
                     </div>
 
                     <div class="form-group">
@@ -54,6 +104,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @if(isset($file))
 <!-- Edit File Modal -->
@@ -172,7 +223,33 @@
                         </div>
                     </div>
                     @endif
+        </div>
 
-
+@if(isset($question->resource->id))
+    <!-- Delete Question Modal -->
+    <div class="modal fade" id="deleteFileModal{{$question->resource->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete a File</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="inline" action="{{ route('file-delete',$question->resource->id) }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <p>Are you sure you want to delete this file?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+                </form>
+            </div>
         </div>
     </div>
+@endif
+
+

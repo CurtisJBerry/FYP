@@ -24,18 +24,19 @@
                     @if(Auth::user()->user_type == "user")
                         @if($showall == "true")
                             <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'false']) }}"><button type="button" class="btn btn-success float-right">
-                                Toggle All On
+                                Toggle All: ON
                             </button></a>
                         @else
                             <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'true']) }}"><button type="button" class="btn btn-success float-right">
-                                    Toggle All Off
+                                    Toggle All: OFF
                                 </button></a>
-                            @endif
+                        @endif
                     @endif
                     <div class="grid grid-cols-6">
                         @if($tags->count())
                             @foreach($tags as $tag)
                                 @foreach($tag->resources as $file)
+                                    @include('file-upload-modals')
                                             <div class="flex items-center justify-center flex-col p-4 rounded-md w-40 space-y-4 bg-blue-300">
                                                 <h1 class="text-black">{{ $file->resource_name }}</h1>
                                                 <div class="inline-flex">
@@ -73,8 +74,6 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            @include('file-upload-modals')
-
                                 @endforeach
                             @endforeach
                         @else
@@ -84,7 +83,6 @@
                         @endif
                     </div>
                 </div>
-
                 <div class="p-6 bg-white border-b border-gray-200">
                     <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
                             Go Back
@@ -92,7 +90,7 @@
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$submodule->submodule_name}}</h3>
                     @if($tests->count())
                         @foreach($tests as $test)
-                            <h3> {{ $test->test_name }}</h3>
+                            <a href="{{ route('/user-test.show', $test->id) }}"><h3> {{ $test->test_name }}</h3></a>
                         @endforeach
                     @else
                         <h3> No tests are currently available, sorry!</h3>
@@ -100,6 +98,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 </x-app-layout>

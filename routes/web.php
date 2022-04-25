@@ -5,7 +5,9 @@ use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminVerificationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\student\LearnerTypeTestController;
 use App\Http\Controllers\student\PastTestsController;
+use App\Http\Controllers\student\StudentTestController;
 use App\Http\Controllers\student\VerificationController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\FileUploadController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\SubModuleController;
 use App\Http\Controllers\teacher\TeacherAnswerController;
 use App\Http\Controllers\teacher\TeacherQuestionController;
 use App\Http\Controllers\teacher\TeacherTestController;
+use App\Models\Test;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,7 +66,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
     Route::group(['middleware' => 'is_user:user'], function () {
 
         Route::get('/user/dashboard', function (){
-            return view('student/dashboard');
+            $test = Test::where('test_name', "Learner Type")->first();
+            return view('student/dashboard', compact('test'));
         })->name('user.dashboard');
 
         Route::get('/user/verification', function (){
@@ -73,6 +77,14 @@ Route::group(['auth:sanctum', 'verified'], function() {
         Route::post('/user/verification',[VerificationController::class, 'store'])->name('user-verify');
 
         Route::resource('/past-tests',PastTestsController::class);
+
+        Route::resource('/user-test', StudentTestController::class);
+
+        Route::get('/user-test/show/{id}',[StudentTestController::class, 'show'])->name('/user-test.show');
+
+        Route::resource('/user-learner', LearnerTypeTestController::class);
+
+        Route::post('/user-learner/update',[LearnerTypeTestController::class, 'update'])->name('/user-learner.update');
 
     });
 
@@ -101,10 +113,12 @@ Route::group(['auth:sanctum', 'verified'], function() {
 
         //teacher test creation controllers
         Route::resource('/teacher-tests',TeacherTestController::class);
+        Route::get('/teacher-tests/show/{id}',[TeacherTestController::class, 'show'])->name('/teacher-tests.show');
+
         Route::resource('/teacher-question',TeacherQuestionController::class);
+
         Route::resource('/teacher-answer',TeacherAnswerController::class);
 
     });
-
 
 });

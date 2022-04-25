@@ -15,12 +15,24 @@ class TeacherAnswerController extends Controller
             'row.*.questionid' => 'required',
             'row.*.answers' => 'required',
             'row.*.correct' => 'required',
+            'row.*.type' => 'nullable',
 
         ]);
 
         $answers = $request->answers;
         $correct = $request->correct;
         $questionid = $request->questionid;
+        $type = $request->type;
+
+        $correctcount = 0;
+
+        $answerModels = Answer::where('question_id', $questionid)->get();
+
+        foreach ($answerModels as $a){
+            if($a->correct == "y"){
+                $correctcount += 1;
+            }
+        }
 
         if (count(array_unique($answers, SORT_STRING)) < count($answers)){
 
@@ -28,23 +40,30 @@ class TeacherAnswerController extends Controller
 
         }elseif(count(array_keys($correct, "y")) > 1){
 
-            return back()->dangerBanner('An Answer can only have one correct answer, please try again.');
+            return back()->dangerBanner('An Question can only have one correct answer, please try again.');
         }
 
         foreach ($request->answers as $key => $answer){
 
-            $answer = Answer::where('answer_text', $answer)->where('question_id', $questionid[$key])->get();
+            if($correct[$key] == "y" and $correctcount == 1){
 
-            if ($answer->count()){
-                return back()->dangerBanner('An Answer with this text already exists, please try again.');
+                return back()->dangerBanner('An Question can only have one correct answer, please try again.');
+
             }else{
-                $answer = new Answer;
+                $answer = Answer::where('answer_text', $answer)->where('question_id', $questionid[$key])->get();
 
-                $answer->question_id = $questionid[$key];
-                $answer->answer_text = $answers[$key];
-                $answer->correct = $correct[$key];
+                if ($answer->count()){
+                    return back()->dangerBanner('An Answer with this text already exists, please try again.');
+                }else{
+                    $answer = new Answer;
 
-                $answer->save();
+                    $answer->question_id = $questionid[$key];
+                    $answer->answer_text = $answers[$key];
+                    $answer->correct = $correct[$key];
+                    $answer->type = $type[$key];
+
+                    $answer->save();
+                }
             }
         }
 

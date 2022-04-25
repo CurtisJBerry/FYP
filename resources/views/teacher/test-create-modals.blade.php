@@ -25,7 +25,7 @@
 </div>
 
 <!-- Add Answer Modal -->
-<div class="modal fade" id="addAnswerModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addAnswerModal{{$question->id, $question->answers->count()}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -38,7 +38,7 @@
                 <form action="{{ route('teacher-answer.store') }}" method="POST">
                     @csrf
                     @method('POST')
-                    @for($i = 1; $i <= 3; $i++)
+                    @for($i = 1; $i <= config('global.maxanswers') - $question->answers->count(); $i++)
                         <div class="form-group">
                             <div class="form-group">
                                 <label for="answers[]" class="col-form-label">Answer text:</label>
@@ -48,11 +48,25 @@
 
                         <div class="form-group">
                             <div class="form-group">
-                                <label for="correct" class="col-form-label">Is this the correct answer?</label>
-                                <select name="correct[]" id="type" class="form-control" size="1" required>
-                                    <option value="y">Yes</option>
-                                    <option value="n">No</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="correct" class="col-form-label">Is this the correct answer?</label>
+                                        <select name="correct[]" id="type" class="form-control" size="1" required>
+                                            <option value="y">Yes</option>
+                                            <option value="n">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="type[]" class="col-form-label">Optional: Answer type</label>
+                                        <select class="form-control" id="type[]" name="type[]">
+                                            <option value="" selected>No type set</option>
+                                            <option value="reading">Reading</option>
+                                            <option value="auditory">Auditory</option>
+                                            <option value="visual">Visual</option>
+                                            <option value="kinesthetic">Kinesthetic</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
