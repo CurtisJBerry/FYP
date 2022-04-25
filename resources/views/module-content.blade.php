@@ -24,11 +24,11 @@
                     @if(Auth::user()->user_type == "user")
                         @if($showall == "true")
                             <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'false']) }}"><button type="button" class="btn btn-success float-right">
-                                Toggle All On
+                                Toggle All: ON
                             </button></a>
                         @else
                             <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'true']) }}"><button type="button" class="btn btn-success float-right">
-                                    Toggle All Off
+                                    Toggle All: OFF
                                 </button></a>
                         @endif
                     @endif
@@ -90,7 +90,7 @@
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$submodule->submodule_name}}</h3>
                     @if($tests->count())
                         @foreach($tests as $test)
-                            <h3> {{ $test->test_name }}</h3>
+                            <a href="{{ route('/user-test.show', $test->id) }}"><h3> {{ $test->test_name }}</h3></a>
                         @endforeach
                     @else
                         <h3> No tests are currently available, sorry!</h3>

@@ -22,6 +22,10 @@
 
                     <!-- User only links -->
                     @if(Auth::user()->user_type == "user")
+                        <x-jet-nav-link href="{{ route('user-test.index') }}" :active="request()->routeIs('user-test.index')">
+                            {{ __('View All Tests') }}
+                        </x-jet-nav-link>
+
                         <x-jet-nav-link href="{{ route('past-tests.index') }}" :active="request()->routeIs('past-tests.index')">
                             {{ __('View Past Test Scores') }}
                         </x-jet-nav-link>

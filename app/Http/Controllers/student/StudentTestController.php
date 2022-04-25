@@ -4,6 +4,7 @@ namespace App\Http\Controllers\student;
 
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\SubModule;
 use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -11,6 +12,20 @@ use Illuminate\Routing\Controller;
 
 class StudentTestController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index() {
+
+        $tests = Test::paginate(10);
+        $submodules = SubModule::with('module.subject')->get();
+
+        return view('student/view-all-tests', compact('tests','submodules'));
+
+    }
+
     /**
      * Display a test with the related questions and answers
      *
@@ -40,25 +55,47 @@ class StudentTestController extends Controller
         $answers = $request->answers;
         $questions = count($request->questionid);
 
-        $score = 0;
-        $question_percentage = 100 / $questions;
+        if(empty($answers)){
+            return back()->dangerBanner('You must answer the questions to get a score!');
+        }else{
 
-        $test = Test::find($request->testid);
+            $score = 0;
+            $question_percentage = 100 / $questions;
 
-        //for each question, get the answers
-        foreach ($request->questionid as $q){
-            $a  = Answer::where('question_id', $q)->where('correct', "y")->first();
-            foreach ($answers as $key => $val){
-                if ($a->id == $val){
-                    $score += $question_percentage;
+            $test = Test::find($request->testid);
+
+            //for each question, get the answers
+            foreach ($request->questionid as $q){
+
+                $a  = Answer::where('question_id', $q)->where('correct', "y")->first();
+                if (empty($a)){
+                    break;
+                }else{
+
+                    $data = $a->id;
+
+                    foreach ($answers as $key => $val){
+
+                        if ($data == $val){
+                            $score += $question_percentage;
+                        }else{
+                            break;
+                        }
+                    }
+
                 }
+
+            }
+
+            if (round($score, 2) == 100.0){
+                return back()->banner('You scored 100%!');
+            }else{
+                $score = (round($score, 2));
+
+                return back()->banner('You scored ' . $score . "%. Your score has been added to your account.");
             }
         }
 
-        if (round($score, 2) == 100.0){
-            dd("Full marks");
-        }
-        dd(round($score, 2));
     }
 
 

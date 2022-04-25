@@ -5,12 +5,42 @@ namespace App\Http\Controllers\student;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\Question;
+use App\Models\Tag;
 use App\Models\Test;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LearnerTypeTestController extends Controller
 {
-    public function store(Request $request){
+
+    /**
+     * Display a test with the related questions and answers
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $test = Test::find($id);
+
+        $questions = Question::where('test_id', $id)->with('answers')->get();
+
+        $alltags = Tag::all();
+
+        return view('student/view-learner-test', compact('test', 'questions', 'alltags'));
+
+    }
+
+    /**
+     * Check the learner type test results and return the value to the user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request)
+    {
 
         $request->validate([
             'row.*.answers' => 'required',
@@ -26,42 +56,83 @@ class LearnerTypeTestController extends Controller
         $auditory = 0;
         $kinesthetic = 0;
 
-        //for each question, get the answers
-        foreach ($request->questionid as $key => $q){
+        $question_percentage = 100 / $questions;
 
-            if (empty($answers[$key])){
-                continue;
-            }else{
-                $a = Answer::where('id', $answers[$key])->first();
-                $answertype = $a->type;
+        if (empty($answers)) {
+            return back()->dangerBanner('You must answer the questions to get a learner type suggestion.');
+        } else {
+
+            //for each question, get the answers
+            foreach ($answers as $key => $q) {
+
+                if (empty($q)) {
+                    continue;
+                } else {
+                    $a = Answer::where('id', $q)->first();
+                    $answertype = $a->type;
+                }
+
+                switch ($answertype) {
+
+                    case 'reading':
+                        $reading += $question_percentage;
+                        break;
+
+                    case 'visual':
+                        $visual += $question_percentage;
+                        break;
+
+                    case 'auditory':
+                        $auditory += $question_percentage;
+                        break;
+
+                    case 'kinesthetic':
+                        $kinesthetic += $question_percentage;
+                        break;
+                }
             }
 
-            switch ($answertype){
 
-                case 'reading':
-                    $reading += 1;
-                    break;
+            $array = array("Reading" => $reading, "Visual" => $visual, "Auditory" => $auditory, "Kinesthetic" => $kinesthetic);
 
-                case 'visual':
-                    $visual += 1;
-                    break;
+            $maxIndex = array_search(max($array), $array);
 
-                case 'auditory':
-                    $auditory += 1;
-                    break;
+            if (count(array_unique($array)) == 2) {
+                return back()->dangerBanner('We couldn\'t determine your learner type as there were matching values! Please try again.');
+            } else {
 
-                case 'kinesthetic':
-                    $kinesthetic += 1;
-                    break;
+                return redirect()->route('user.dashboard')->with('status', $maxIndex);
             }
+
         }
+    }
 
-        echo "Reading count:" .$reading . "<br>" . "Visual count:" .$visual . "<br>" . "Auditory count:" .$auditory . "<br>" . "Kinesthetic count:" .$kinesthetic;
+    /**
+     * Update the users learner type based on the given parameter
+     *
+     * @return mixed
+     */
+    public function update(Request $request)
+    {
+        $request->validate([
+            'type' => 'required',
+        ]);
 
+        $user = User::where('id',Auth::user()->id)->first();
 
-//        if (round($score, 2) == 100.0){
-//            dd("Full marks");
-//        }
-//        dd(round($score, 2));
+        if (empty($user)){
+            return back()->dangerBanner('Your account could not be found!');
+        }else{
+
+            if ($user->learner_type !== strtolower($request->type)) {
+
+                $user->learner_type = strtolower($request->type);
+
+                $user->save();
+
+            }
+            return back()->banner('Your Learner Type has been updated to ' . $request->type . ".");
+
+        }
     }
 }

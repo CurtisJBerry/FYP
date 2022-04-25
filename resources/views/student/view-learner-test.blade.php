@@ -33,9 +33,9 @@
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
                                 <h2> Total questions for this test: {{$questions->count()}} / {{config('global.maxquestions')}}</h2>
-                                <form action="{{ route('user-test.store') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    @method('POST')
+                                <form action="{{ route('user-learner.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('POST')
                                     @if($questions->count())
                                         @foreach($questions as $question)
                                             <div class="row">
@@ -92,10 +92,10 @@
                                                 </div>
                                             </div>
                                         @endforeach
-                                        <input type="hidden" value="{{$test->id}}" name="testid">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success float-right">Submit</button>
-                                        </div>
+                                    <input type="hidden" value="{{$test->id}}" name="testid">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success float-right">Submit</button>
+                                    </div>
                                     @endif
                                 </form>
                             </div>

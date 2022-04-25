@@ -79,9 +79,12 @@ Route::group(['auth:sanctum', 'verified'], function() {
         Route::resource('/past-tests',PastTestsController::class);
 
         Route::resource('/user-test', StudentTestController::class);
+
         Route::get('/user-test/show/{id}',[StudentTestController::class, 'show'])->name('/user-test.show');
 
         Route::resource('/user-learner', LearnerTypeTestController::class);
+
+        Route::post('/user-learner/update',[LearnerTypeTestController::class, 'update'])->name('/user-learner.update');
 
     });
 
