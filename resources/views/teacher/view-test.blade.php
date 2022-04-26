@@ -13,14 +13,16 @@
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white">
                                 <h2 class="inline-flex"> Total questions for this test: {{$questions->count()}} / {{config('global.maxquestions')}}</h2>
-                                @if($questions->count() < config('global.maxquestions'))
-                                    <button type="button" class="btn btn-success inline-flex" data-toggle="modal" data-target="#addQuestionModal" style="padding-right: 10px">
-                                        Add Question
-                                    </button>
-                                @endif
                                 <a href="{{ route('teacher-tests.index') }}"><button type="button" class="btn btn-primary float-right">
                                         Go Back
                                     </button></a>
+                                @if($questions->count() < config('global.maxquestions'))
+                                    <button type="button" class="btn btn-success inline-flex" data-toggle="modal" data-target="#addQuestionModal{{$test->id}}" style="padding-right: 10px">
+                                        Add Question
+                                    </button>
+                                    @include('teacher/test-create-modals')
+                                @endif
+
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
@@ -34,9 +36,10 @@
                                     @if($questions->count())
                                         @foreach($questions as $question)
                                             @include('file-upload-modals')
+                                            @include('teacher/test-create-modals')
                                             <tr>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                    <p>{{$question->description}}</p>
+                                                    <p style="word-wrap: break-word; white-space: normal;">{{$question->description}}</p>
                                                     @if(isset($question->resource->resource_name))
                                                             @if($extension = pathinfo(public_path('/storage/files/'.$question->resource->resource_name), PATHINFO_EXTENSION) == 'mp4')
                                                                 <div class="p-6 bg-white border-b border-gray-200">
@@ -79,7 +82,7 @@
                                                             <p>{{$answer->answer_text}}</p>
                                                         @endif
                                                     @endforeach
-                                                    @if($question->answers->count() < config('global.maxanswers'))
+                                                    @if($question->answers->count() < config('global.maxtestanswers'))
                                                             <button type="button" class="btn btn-success float-right inline" data-toggle="modal" data-target="#addAnswerModal{{$question->id, $question->answers->count()}}">
                                                                 Add Answer
                                                             </button>
@@ -101,7 +104,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            @include('teacher/test-create-modals')
                                         @endforeach
                                     @else
                                         <tr>

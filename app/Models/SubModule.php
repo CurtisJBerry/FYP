@@ -40,7 +40,7 @@ class SubModule extends Model
     /**
      * Get the tests for the module.
      */
-    public function test(): HasMany
+    public function tests(): HasMany
     {
         return $this->hasMany(Test::class);
     }

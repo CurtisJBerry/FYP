@@ -40,6 +40,8 @@ class TeacherTestController extends Controller
 
         $alltags = Tag::all();
 
+
+
         return view('teacher/view-test', compact('test', 'questions', 'alltags'));
 
     }

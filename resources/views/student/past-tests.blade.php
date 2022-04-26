@@ -17,10 +17,12 @@
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
-{{--                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>--}}
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SubModule Name</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Module Name</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Average Score Per Test</th>
+
                                     </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -29,9 +31,9 @@
                                                 @foreach($item->tests as $test)
                                                     @if($test->count())
                                                         <tr>
-{{--                                                            <td class="px-6 py-4 whitespace-nowrap text-sm">{{$item->name}}</td>--}}
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->test_name}}</td>
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                                            <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->pivot->score}}%</td>
                                                         </tr>
                                                     @else
