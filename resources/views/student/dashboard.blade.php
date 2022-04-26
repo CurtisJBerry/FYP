@@ -94,7 +94,7 @@
                         <div class="flex items-center justify-center flex-col p-4 rounded-md w-45 space-y-4">
                             <h1 class="text-black text-center">Take our learner type test</h1>
                             <div class="inline-flex">
-                                   <a href="{{ route('user-learner.show', $test->id) }}"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                   <a href="{{ route('user-learner.show', $learnertest->id) }}"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
                                         <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
                                     </svg></a>
@@ -115,9 +115,43 @@
                 </div>
 
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for </h3>
-
+                    <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for:</h3>
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Module Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sub Module Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Questions</th>
+                            <th scope="col" class="relative px-6 py-3">
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        @if($tests->count())
+                            @foreach($tests as $test)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->test_name}}</td>
+                                    @if(isset($test->submodule->module->subject->subject_name))
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->subject->subject_name}}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                    @else
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">No subject name set.</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">No module name set.</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">No submodule name set.</td>
+                                    @endif
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / {{config('global.maxquestions')}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="{{ route('/user-test.show', $test->id) }}">
+                                            <button class="btn btn-primary">View</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                        @endforeach
+                    @endif
                 </div>
+                {{$tests->links()}}
             </div>
         </div>
     </div>

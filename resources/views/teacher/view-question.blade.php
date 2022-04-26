@@ -52,8 +52,8 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <div class="form-group">
-                                                    <label for="answer[]" class="col-form-label">Answer text</label>
-                                                    <input type="text" class="form-control" id="answer[]" name="answers[]" value="{{$answer->answer_text}}" required>
+                                                    <label for="answers[]" class="col-form-label">Answer text</label>
+                                                    <input type="text" class="form-control" id="answers[]" name="answers[]" value="{{$answer->answer_text}}" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">

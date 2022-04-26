@@ -1,4 +1,5 @@
 <!-- Delete Question Modal -->
+@if(isset($question->id))
 <div class="modal fade" id="deleteQuestionModal{{$question->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -38,11 +39,11 @@
                 <form action="{{ route('teacher-answer.store') }}" method="POST">
                     @csrf
                     @method('POST')
-                    @for($i = 1; $i <= config('global.maxanswers') - $question->answers->count(); $i++)
+                    @for($i = 1; $i <= config('global.maxtestanswers') - $question->answers->count(); $i++)
                         <div class="form-group">
                             <div class="form-group">
                                 <label for="answers[]" class="col-form-label">Answer text:</label>
-                                <input type="text" class="form-control" id="answers[]" name="answers[]" required>
+                                <input type="text" class="form-control" id="answers[]" name="answers[]" value="{{ old('answers[]') }}" required>
                             </div>
                         </div>
 
@@ -84,8 +85,10 @@
     </div>
 </div>
 
+@endif
+
 <!-- Add Question Modal -->
-<div class="modal fade" id="addQuestionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addQuestionModal{{$test->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

@@ -63,6 +63,8 @@ class TeacherQuestionController extends Controller
         $answers = $request->answers;
         $type = $request->type;
         $correctcount = 0;
+        $ncount = 0;
+        $ycount = 0;
 
         $question = Question::findorFail($id);
         $answerModels = Answer::where('question_id', $id)->get();
@@ -72,6 +74,16 @@ class TeacherQuestionController extends Controller
                 $correctcount += 1;
             }
         }
+
+        foreach ($correct as $a){
+            if($a === 'n'){
+                $ncount += 1;
+            }else{
+                $ycount += 1;
+
+            }
+        }
+
 
         if($question){
             $question->update([
@@ -87,23 +99,25 @@ class TeacherQuestionController extends Controller
 
             return back()->dangerBanner('Answers cannot have the same text, please try again.');
 
-        }elseif(count(array_keys($correct, "y")) > 1 or count(array_keys($correct, "n")) == config('global.maxanswers') or $correctcount == 1){
+        }elseif($ncount > 2 or $correctcount > 1 or $ycount > 1){
 
             return back()->dangerBanner('An Answer can only and must have one correct answer, please try again.');
+        }else{
+
+            //for each form answer
+            foreach ($request->answers as $key => $answer){
+                $answerModels[$key]->answer_text = $answers[$key];
+                $answerModels[$key]->correct = $correct[$key];
+                $answerModels[$key]->type = $type[$key];
+                $answerModels[$key]->question_id = $id;
+                $answerModels[$key]->save();
+            }
+
+
+
+            return back()->banner('Question updated successfully.');
+
         }
-
-        //for each form answer
-        foreach ($request->answers as $key => $answer){
-            $answerModels[$key]->answer_text = $answers[$key];
-            $answerModels[$key]->correct = $correct[$key];
-            $answerModels[$key]->type = $type[$key];
-            $answerModels[$key]->question_id = $id;
-            $answerModels[$key]->save();
-        }
-
-
-
-        return back()->banner('Question updated successfully.');
     }
 
     public function destroy($id){

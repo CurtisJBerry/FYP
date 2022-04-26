@@ -15,6 +15,7 @@ use App\Http\Controllers\SubModuleController;
 use App\Http\Controllers\teacher\TeacherAnswerController;
 use App\Http\Controllers\teacher\TeacherQuestionController;
 use App\Http\Controllers\teacher\TeacherTestController;
+use App\Models\SubModule;
 use App\Models\Test;
 use Illuminate\Support\Facades\Route;
 
@@ -66,8 +67,10 @@ Route::group(['auth:sanctum', 'verified'], function() {
     Route::group(['middleware' => 'is_user:user'], function () {
 
         Route::get('/user/dashboard', function (){
-            $test = Test::where('test_name', "Learner Type")->first();
-            return view('student/dashboard', compact('test'));
+            $learnertest = Test::where('test_name', "Learner Type")->first();
+            $tests = Test::with('submodule.module.subject')->whereNotNull('submodule_id')->orderBy('test_name')->paginate(5);
+
+            return view('student/dashboard', compact('learnertest', 'tests'));
         })->name('user.dashboard');
 
         Route::get('/user/verification', function (){

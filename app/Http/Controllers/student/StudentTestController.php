@@ -9,6 +9,7 @@ use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class StudentTestController extends Controller
 {
@@ -20,9 +21,9 @@ class StudentTestController extends Controller
     public function index() {
 
         $tests = Test::paginate(10);
-        $submodules = SubModule::with('module.subject')->get();
+        //$submodules = SubModule::with('module.subject')->get();
 
-        return view('student/view-all-tests', compact('tests','submodules'));
+        return view('student/view-all-tests', compact('tests'));
 
     }
 
@@ -53,7 +54,9 @@ class StudentTestController extends Controller
         ]);
 
         $answers = $request->answers;
+
         $questions = count($request->questionid);
+
 
         if(empty($answers)){
             return back()->dangerBanner('You must answer the questions to get a score!');
@@ -67,19 +70,19 @@ class StudentTestController extends Controller
             //for each question, get the answers
             foreach ($request->questionid as $q){
 
-                $a  = Answer::where('question_id', $q)->where('correct', "y")->first();
-                if (empty($a)){
+                $a  = Answer::where('question_id', $q)->where('correct', 'y')->first();
+
+                $data = $a->id;
+
+                if (empty($data)){
                     break;
                 }else{
-
-                    $data = $a->id;
 
                     foreach ($answers as $key => $val){
 
                         if ($data == $val){
+
                             $score += $question_percentage;
-                        }else{
-                            break;
                         }
                     }
 
@@ -87,12 +90,19 @@ class StudentTestController extends Controller
 
             }
 
+            $user = Auth::user();
+
             if (round($score, 2) == 100.0){
-                return back()->banner('You scored 100%!');
+
+                $user->tests()->attach($user->id, ['test_id' => $request->testid, 'score' => 100]);
+
+                return back()->banner('You scored 100%! Keep up the great work!');
             }else{
                 $score = (round($score, 2));
 
-                return back()->banner('You scored ' . $score . "%. Your score has been added to your account.");
+                $user->tests()->attach($user->id, ['test_id' => $request->testid, 'score' => $score]);
+
+                return back()->banner('You scored ' . $score . "%. Keep up the good work, your score has been added to your account.");
             }
         }
 

@@ -11,10 +11,13 @@
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                            <div class="p-6 bg-white">
-                                <a href="{{ route('home') }}"><button type="button" class="btn btn-primary float-right inline-flex">
+                            <div class="p-6 bg-white border-b border-gray-200">
+                                <a href="{{ route('past-tests.index')}}"><button type="button" class="btn btn-primary float-right">
                                         Go Back
                                     </button></a>
+                                <h3 class="font-semibold text-xl text-gray-800 leading-tight">All the Tests We currently have available</h3>
+                            </div>
+                            <div class="p-6 bg-white">
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
