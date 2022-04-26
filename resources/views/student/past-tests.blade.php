@@ -12,9 +12,6 @@
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white border-b border-gray-200">
-                                <a href="{{ route('home')}}"><button type="button" class="btn btn-primary float-right">
-                                        Go Back
-                                    </button></a>
                                 <h3 class="font-semibold text-xl text-gray-800 leading-tight">View Past Tests</h3>
                             </div>
                             <div class="p-6 bg-white">
@@ -57,7 +54,6 @@
                                 </table>
                             </div>
                             {{$user->links()}}
-
                         </div>
                     </div>
                 </div>

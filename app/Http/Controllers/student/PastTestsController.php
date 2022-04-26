@@ -36,10 +36,11 @@ class PastTestsController extends Controller
 
         $test = Test::where('id', $id)->first();
 
-
-        $user = User::where('id','=', Auth::user()->id)->with('tests', function ($query) use ($id) {
+        $user = User::where('id','=', Auth::user()->id)->with(['tests' => function ($query) use ($id) {
             $query->where('test_id', $id);
-        })->paginate(10);
+        }])->get();
+
+        //dd($user);
 
         $totalScore = 0;
         $testcount = 0;

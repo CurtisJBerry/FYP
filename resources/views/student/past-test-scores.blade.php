@@ -52,6 +52,7 @@
                                             @endforeach
                                         @endforeach
                                     @endif
+                                    </tbody>
                                     <tfoot class="bg-gray-100">
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm"></td>
@@ -68,10 +69,9 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">{{$highestScore}}%</td>
                                     </tr>
                                     </tfoot>
-                                    </tbody>
                                 </table>
+
                             </div>
-                            {{$user->links()}}
                         </div>
                     </div>
                 </div>
