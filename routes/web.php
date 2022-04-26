@@ -45,7 +45,7 @@ Route::group(['auth:sanctum', 'verified'], function() {
 
     Route::resource('/submodule', SubModuleController::class);
 
-    Route::get('/submodule/show/{submodule}/{showall}',[SubModuleController::class, 'show'])->name('/sub.show');
+    Route::get('/submodule/show/{submodule}/{showall}/{module}',[SubModuleController::class, 'show'])->name('/sub.show');
 
 
     //File routes

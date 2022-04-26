@@ -9,28 +9,33 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    <a href="{{ route('module.show', $module->id) }}"><button type="button" class="btn btn-primary float-right">
+                            Go Back
+                        </button></a>
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">{{ $submodule->submodule_name }}</h3>
+                    <br>
                     <p> {{ $submodule->description }}</p>
                 </div>
 
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight inline">Resources available for this module </h3>
+                    <br>
                     @if(Auth::user()->user_type !== "user")
-                    <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addFileModal{{Auth::user()->id}}">
-                        Add File
-                    </button>
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addFileModal{{Auth::user()->id}}">
+                            Add File
+                        </button>
                     @endif
-                    <p> PDF and Image files will open in browser, any other type of file will download automatically when clicking view.</p>
                     @if(Auth::user()->user_type == "user")
                         @if($showall == "true")
-                            <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'false']) }}"><button type="button" class="btn btn-success float-right">
-                                Toggle All: ON
-                            </button></a>
-                        @else
-                            <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'true']) }}"><button type="button" class="btn btn-success float-right">
-                                    Toggle All: OFF
+                            <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'false', 'module' => $module->id]) }}"><button type="button" class="btn btn-success float-right">
+                                    Toggle All: ON
                                 </button></a>
+                        @else
+                            <a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => 'true', 'module' => $module->id]) }}">
+                                <button type="button" class="btn btn-success float-right">
+                                    Toggle All: OFF</button></a>
                         @endif
+                    <p> PDF and Image files will open in browser, any other type of file will download automatically when clicking view.</p>
                     @endif
                     <div class="grid grid-cols-6">
                         @if($tags->count())
@@ -84,13 +89,16 @@
                     </div>
                 </div>
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <a href="{{ URL::previous() }}"><button type="button" class="btn btn-primary float-right">
-                            Go Back
-                        </button></a>
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">Tests available for {{$submodule->submodule_name}}</h3>
                     @if($tests->count())
                         @foreach($tests as $test)
-                            <a href="{{ route('/user-test.show', $test->id) }}"><h3> {{ $test->test_name }}</h3></a>
+                            @if(Auth::user()->user_type === 'user')
+                                <a href="{{ route('/user-test.show', $test->id) }}"><h3> {{ $test->test_name }}</h3></a>
+                            @elseif(Auth::user()->user_type === 'teacher')
+                                <a href="{{ route('/teacher-tests.show', $test->id) }}"><h3> {{ $test->test_name }}</h3></a>
+                            @else
+                                <h3>{{$test->test_name}}</h3>
+                            @endif
                         @endforeach
                     @else
                         <h3> No tests are currently available, sorry!</h3>

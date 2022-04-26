@@ -11,15 +11,18 @@
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <div class="p-6 bg-white border-b border-gray-200">
+                                <a href="{{ route('subjects.show', $subject->id) }}"><button type="button" class="btn btn-primary float-right">
+                                        Go Back
+                                    </button></a>
+                                <h3 class="font-semibold text-xl text-gray-800 leading-tight">View all Sub Modules</h3>
+                            </div>
                             <div class="p-6 bg-white">
                                 @if(Auth::user()->user_type !== "user")
                                     <button type="button" class="btn btn-success float-left" data-toggle="modal" data-target="#addSubModuleModal">
                                         Add Sub Module
                                     </button>
                                 @endif
-                                <a href="{{ route('subjects.show', $subject->id) }}"><button type="button" class="btn btn-primary float-right">
-                                        Go Back
-                                    </button></a>
                                 <table class="w-full">
                                     <thead class="bg-gray-50">
                                     <tr>
@@ -34,7 +37,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
                                                         <div class="ml-4">
-                                                            <div class="text-sm font-medium text-gray-900"><a href="{{ route('/sub.show', ['submodule' => $module->id, 'showall' => "false"]) }}">{{ $submodule->submodule_name }}</a></div>
+                                                            <div class="text-sm font-medium text-gray-900"><a href="{{ route('/sub.show', ['submodule' => $submodule->id, 'showall' => "false", 'module' => $module->id]) }}">{{ $submodule->submodule_name }}</a></div>
                                                         </div>
                                                     </div>
                                                 </td>

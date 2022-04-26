@@ -7,6 +7,7 @@ use App\Models\SubModule;
 use App\Models\Tag;
 use App\Models\Test;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -15,11 +16,12 @@ class SubModuleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\SubModule $submodule
+     * @param SubModule $submodule
      * @param string $showall
-     * @return \Illuminate\Http\Response
+     * @param Module $module
+     * @return Response
      */
-    public function show(SubModule $submodule, string $showall)
+    public function show(SubModule $submodule, string $showall, Module $module)
     {
 
         if ($showall == "false"){
@@ -57,7 +59,7 @@ class SubModuleController extends Controller
 
         $alltags = Tag::all();
 
-        return view('module-content', ['submodule' => $submodule, 'tags' => $tags, 'tests' => $tests, 'alltags' => $alltags, 'showall' => $showall]);
+        return view('module-content', compact('submodule', 'tags', 'tests', 'alltags', 'showall', 'module'));
 
     }
 
