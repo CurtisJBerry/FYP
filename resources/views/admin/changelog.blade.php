@@ -15,7 +15,7 @@
                                 <a href="{{ route('home')}}"><button type="button" class="btn btn-primary float-right">
                                         Go Back
                                     </button></a>
-                                <h3 class="font-semibold text-xl text-gray-800 leading-tight">Welcome to your Personal Student Dashboard</h3>
+                                <h3 class="font-semibold text-xl text-gray-800 leading-tight">Browse the Changelog of Users viewing history</h3>
                             </div>
 
                             <div class="p-6 bg-white border-b border-gray-200">
