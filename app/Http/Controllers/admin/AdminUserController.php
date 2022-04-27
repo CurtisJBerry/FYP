@@ -22,6 +22,28 @@ class AdminUserController extends Controller
 
     }
 
+    public function update(Request $request) {
+
+        $request->validate([
+            'userid' => 'required',
+            'role' => 'required',
+        ]);
+
+        $user = User::where('id', $request->userid)->first();
+
+        if (empty($user)){
+            return back()->dangerBanner('User could not be found! No changes have been saved.');
+        }else{
+
+            $user->user_type = $request->role;
+            $user->save();
+
+            return back()->banner('User\'s role has been updated to ' . ucfirst($request->role));
+
+        }
+
+    }
+
 
     public function destroy($user)
     {
@@ -29,7 +51,6 @@ class AdminUserController extends Controller
         $toDelete = User::find($user);
 
         $toDelete->delete();
-
 
         return back()->banner('User deleted successfully.');
 

@@ -15,7 +15,7 @@ class CreateChangelogsTable extends Migration
     {
         Schema::create('changelogs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resource_id')->constrained('resources')->cascadeOnDelete();
+            $table->foreignId('resource_id')->constrained('resources');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

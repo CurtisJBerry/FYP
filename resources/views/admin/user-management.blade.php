@@ -11,6 +11,13 @@
                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <div class="p-6 bg-white border-b border-gray-200">
+                                <a href="{{ route('past-tests.index')}}"><button type="button" class="btn btn-primary float-right">
+                                        Go Back
+                                    </button></a>
+                                <h3 class="font-semibold text-xl text-gray-800 leading-tight">Manage Users Permissions</h3>
+                            </div>
+                            <div class="p-6 bg-white">
                             <table class="w-full">
                                 <thead class="bg-gray-50">
                                 <tr>
@@ -41,36 +48,61 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->user_type }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal{{$user->id}}">
-                                                    Delete
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateUserModal{{$user->id}}">
+                                                    Update Role
                                                 </button>
                                             </td>
                                         </tr>
 
-                                        <!-- Delete User Modal -->
-                                        <div class="modal fade" id="deleteUserModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <!-- Update User Modal -->
+                                        <div class="modal fade" id="updateUserModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Delete a User </h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update a User's Role</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{route('admin-users.destroy',$user->id)}}" method="POST">
+                                                        <form action="{{route('admin-users-update')}}" method="POST">
                                                             @csrf
-                                                            @method('DELETE')
+                                                            @method('PUT')
                                                             <div class="form-group">
-                                                                <h2> Are you sure you want to delete this User?</h2>
-                                                                <p>Name: {{$user->name}}</p>
-                                                                <p>ID: {{$user->id}}</p>
+                                                                <h2>Update a User's Role</h2>
+                                                                <br>
+                                                                <label for="role" class="col-form-label">Select a role:</label>
+                                                                <select class="form-control" id="role" name="role">
+                                                                    <option value="user" selected>User</option>
+                                                                    <option value="teacher">Teacher</option>
+                                                                    <option value="admin">Admin</option>
+                                                                </select>
+
+                                                                <p class="hidden text-red-500" >Changing to this value will alter privileges!</p>
+
+                                                                <script type="text/javascript">
+                                                                    $(document).ready(function() {
+                                                                        $('select').change(function() {
+                                                                            if(this.value === "teacher" || this.value === "admin"){
+                                                                                $("p").show();
+                                                                            }else{
+                                                                                $("p").hide();
+                                                                            }
+
+                                                                            $('#updateUserModal{{$user->id}}').on('hidden.bs.modal', function () {
+                                                                                $("p").hide();
+                                                                            })
+                                                                        });
+                                                                    });
+                                                                </script>
+
+                                                                <input name="userid" hidden value="{{$user->id}}">
 
                                                             </div>
 
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-danger">Delete User</button>
+                                                                <button type="submit" class="btn btn-primary">Update User</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -91,6 +123,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                        </div>
                         </div>
                     </div>
                     {{$users->links()}}
