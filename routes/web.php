@@ -99,9 +99,11 @@ Route::group(['auth:sanctum', 'verified'], function() {
         })->name('admin.dashboard');
 
         Route::resource('/admin-users',AdminUserController::class);
-        Route::post('/user-update',[AdminUserController::class, 'store'])->name('user-update');
+        Route::post('/admin-users/update',[AdminUserController::class, 'store'])->name('admin-users-update');
 
         Route::resource('/verification', AdminVerificationController::class);
+        Route::post('/verification/update',[AdminVerificationController::class, 'update'])->name('verification-update');
+
         Route::resource('/changelog', AdminChangelogController::class);
 
     });

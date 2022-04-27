@@ -42,6 +42,14 @@ class Resource extends Model
     }
 
     /**
+     * Get the question that owns the resource.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get the changelog associated with the resource.
      */
     public function log()

@@ -73,6 +73,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the verification requests for the user.
+     */
+    public function resources(): HasMany
+    {
+        return $this->hasMany(Resource::class);
+    }
+
+    /**
      * Get the changelog for the user.
      */
     public function changelog(): HasMany
