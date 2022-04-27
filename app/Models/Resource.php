@@ -64,4 +64,12 @@ class Resource extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    /**
+     * The chnagelogs that belong to the resource.
+     */
+    public function changelogs()
+    {
+        return $this->hasMany(Changelog::class);
+    }
 }

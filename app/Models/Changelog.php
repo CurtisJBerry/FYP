@@ -30,7 +30,7 @@ class Changelog extends Model
     }
 
     /**
-     * Get the resource that is part of the changelog.
+     * The roles that belong to the user.
      */
     public function resource()
     {
