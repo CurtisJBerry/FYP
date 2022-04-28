@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\Types\Collection;
 
 class ProcessViewingDataController extends Controller
 {
+
     /**
      * Handle the incoming request.
      *
@@ -21,6 +22,12 @@ class ProcessViewingDataController extends Controller
      */
     public function __invoke($id)
     {
+        //assign percentages based on weeks
+        $week4 = 10;
+        $week3 = 20;
+        $week2 = 30;
+        $week1 = 40;
+
         $expDate = Carbon::now()->subDays(28);
 
 //        $tags = Tag::with(['resources.changelogs' => function($query) use ($expDate) {
@@ -35,30 +42,104 @@ class ProcessViewingDataController extends Controller
             return $i['created_at'] < Carbon::now()->subDays(21);
         });
 
-        echo count($under21days) . "<br>";
+        echo "Week 4: " . count($under21days) . "<br>";
+        $count4 = $this->getTagCount($under21days);
+        $arraySum = array_sum($count4);
 
-        $this->getTagCount($under21days);
+        if(!$arraySum == 0){
+            $week4Percentage = $week4 / $arraySum;
+            foreach ($count4 as &$val){
+                $val = $val * $week4Percentage;
+                $val = round($val, 2);
+
+            }
+        }
+        unset($val, $arraySum);
+
 
         [$under14days, $over14days] = $over21days->partition(function ($i){
             return $i['created_at'] < Carbon::now()->subDays(14);
         });
 
-        echo count($under14days) . "<br>";
+        echo "Week 3: " . count($under14days) . "<br>";
+
+        $count3 = $this->getTagCount($under14days);
+        $arraySum = array_sum($count3);
+
+        if(!$arraySum == 0){
+            $week3Percentage = $week3 / $arraySum;
+            foreach ($count3 as &$val){
+                $val = $val * $week3Percentage;
+                $val = round($val, 2);
+
+            }
+        }
+        unset($val, $arraySum);
+
+        //add array values together
+        foreach ($count3 as $key => &$value){
+            $value = round($value + $count4[$key], 2);
+        }
+        unset($value, $val);
 
         [$under7days, $over7days] = $over14days->partition(function ($i){
-            return $i['created_at'] < Carbon::now()->subDays(14);
+            return $i['created_at'] < Carbon::now()->subDays(7);
         });
 
-        echo count($under7days)  . "<br>";
+        echo "Week 2: " . count($under7days)  . "<br>";
 
-        echo count($over7days) . "<br>";
+        $count2 = $this->getTagCount($under7days);
+        $arraySum = array_sum($count2);
+
+        if(!$arraySum == 0){
+            $week2Percentage = $week2 / $arraySum;
+            foreach ($count2 as &$val){
+                $val = $val * $week2Percentage;
+                $val = round($val, 2);
+            }
+        }
+        unset($val, $arraySum);
+
+        //add array values together
+        foreach ($count2 as $key => &$value){
+            $value = round($value + $count3[$key], 2);
+        }
+        unset($value, $val);
 
 
+        echo "Week 1: " . count($over7days) . "<br>";
 
+        $count1 = $this->getTagCount($over7days);
+        $arraySum = array_sum($count1);
+
+        if(!$arraySum == 0){
+            $week1Percentage = $week1 / $arraySum;
+            foreach ($count1 as &$val){
+                $val = $val * $week1Percentage;
+                $val = round($val, 2);
+            }
+        }
+
+        unset($val, $arraySum);
+
+
+        //add array values together
+        foreach ($count1 as $key => &$value){
+            $value = round($value + $count2[$key], 2);
+        }
+        unset($value, $val);
+
+
+        $max = max($count1);
+
+        $key = array_search($max, $count1);
+
+        echo "The max value is: " . $max . ", its key is " . $key;
 
 
         //return back()->banner('Accessed page!');
     }
+
 
     public function getTagCount(\Illuminate\Database\Eloquent\Collection $collection){
 
@@ -91,7 +172,7 @@ class ProcessViewingDataController extends Controller
             }
         }
 
-        return $reading . "<br>" . $visual . "<br>" . $auditory . "<br>" . $kinesthetic;
+        return array('reading' => $reading, 'visual' => $visual, 'auditory' => $auditory, 'kinesthetic' => $kinesthetic);
 
     }
 }
