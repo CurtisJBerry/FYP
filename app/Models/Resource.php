@@ -66,7 +66,7 @@ class Resource extends Model
     }
 
     /**
-     * The chnagelogs that belong to the resource.
+     * The changelogs that belong to the resource.
      */
     public function changelogs()
     {

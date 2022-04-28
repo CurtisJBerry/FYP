@@ -32,7 +32,7 @@ class Changelog extends Model
     /**
      * The roles that belong to the user.
      */
-    public function resource()
+    public function resource(): BelongsTo
     {
         return $this->belongsTo(Resource::class);
     }
