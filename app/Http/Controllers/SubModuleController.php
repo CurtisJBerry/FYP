@@ -59,6 +59,8 @@ class SubModuleController extends Controller
 
         $alltags = Tag::all();
 
+        $module = Module::where('id', $module->id)->first();
+
         return view('module-content', compact('submodule', 'tags', 'tests', 'alltags', 'showall', 'module'));
 
     }
