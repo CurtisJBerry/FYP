@@ -11,6 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Collection;
+use function PHPUnit\Framework\isEmpty;
 
 class ProcessViewingDataController extends Controller
 {
@@ -29,12 +30,14 @@ class ProcessViewingDataController extends Controller
         $week2 = 30;
         $week1 = 40;
 
+
+
         //get the data from the past 4 weeks
         $expDate = Carbon::now()->subDays(28);
 
         $logs = Changelog::with('resource.tags')->where('user_id', $id)->where('created_at','>', $expDate)->get();
 
-        if (empty($logs)){
+        if ($logs->isEmpty()){
             return back()->dangerBanner('You have now viewing data, use our service and look at some of the available resources to get a Learner Type suggestion.');
         }else{
 

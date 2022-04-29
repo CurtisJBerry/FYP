@@ -18,6 +18,9 @@ use App\Http\Controllers\SubModuleController;
 use App\Http\Controllers\teacher\TeacherAnswerController;
 use App\Http\Controllers\teacher\TeacherQuestionController;
 use App\Http\Controllers\teacher\TeacherTestController;
+use App\Models\Module;
+use App\Models\Resource;
+use App\Models\Subject;
 use App\Models\SubModule;
 use App\Models\Test;
 use App\Models\User;
@@ -125,7 +128,13 @@ Route::group(['auth:sanctum', 'verified'], function() {
     Route::group(['middleware' => 'is_teacher:teacher'], function () {
 
         Route::get('/teacher/dashboard', function (){
-            return view('teacher/teacher-dashboard');
+
+            $resources = count(Resource::all());
+            $subjects = count(Subject::all());
+            $modules = count(Module::all());
+            $submodules = count(SubModule::all());
+
+            return view('teacher/teacher-dashboard', compact('resources', 'subjects', 'modules', 'submodules'));
         })->name('teacher.dashboard');
 
         //teacher test creation controllers

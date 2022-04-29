@@ -15,7 +15,7 @@ class AdminProcessAllUserData extends Controller
         $allAccounts = User::where('user_type', '!=', 'admin')->get();
 
         foreach ($allAccounts as $user){
-            (new \App\Http\Controllers\student\ProcessViewingDataController)->__invoke($user->id);
+            (new ProcessViewingDataController)->__invoke($user->id);
         }
         return back()->banner('All accounts have been updated');
     }

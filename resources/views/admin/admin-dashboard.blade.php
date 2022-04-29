@@ -70,9 +70,58 @@
                 </div>
 
                 <div class="p-6 bg-white border-b border-gray-200">
+                    <a href="{{ route('admin-users.index')}}"><button type="button" class="btn btn-primary float-right">
+                            Manage Users
+                        </button></a>
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight">Registered Accounts:</h3>
-                    <p>{{ $students }} Students</p>
-                    <p>{{ $teachers }} Teachers</p>
+                    <div class="p-6 bg-white">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Type</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number of Users</th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                            @if($students and $teachers)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Students</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">{{ $students }}</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Teachers</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500">{{ $teachers }}</div>
+                                    </td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">No Requests found!</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
             </div>
