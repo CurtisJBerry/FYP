@@ -31,7 +31,6 @@ class ProcessViewingDataController extends Controller
         $week1 = 40;
 
 
-
         //get the data from the past 4 weeks
         $expDate = Carbon::now()->subDays(28);
 
