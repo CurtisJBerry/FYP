@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\student\LearnerTypeTestController;
 use App\Http\Controllers\student\PastTestsController;
+use App\Http\Controllers\student\ProcessViewingDataController;
+use App\Http\Controllers\student\ProcessViewingDataControllers;
 use App\Http\Controllers\student\StudentTestController;
 use App\Http\Controllers\student\VerificationController;
 use App\Http\Controllers\SubjectController;
@@ -88,6 +90,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
         Route::resource('/user-learner', LearnerTypeTestController::class);
 
         Route::post('/user-learner/update',[LearnerTypeTestController::class, 'update'])->name('/user-learner.update');
+
+        Route::get('/process-data/{id}',[ProcessViewingDataController::class, '__invoke'])->name('process-data.invoke');
 
     });
 

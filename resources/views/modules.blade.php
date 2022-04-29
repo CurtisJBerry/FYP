@@ -82,7 +82,7 @@
                         @method('POST')
                         <div class="form-group">
                             <label for="modulename" class="col-form-label">Module Name:</label>
-                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="30" placeholder="E.g Marketing, for Business GCSE" required>
+                            <input type="text" class="form-control" id="modulename" name="modulename" maxlength="40" placeholder="E.g Marketing, for Business GCSE" required>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-form-label">Description:</label>

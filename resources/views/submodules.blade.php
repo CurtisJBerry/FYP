@@ -12,7 +12,7 @@
                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <div class="p-6 bg-white border-b border-gray-200">
-                                <a href="{{ route('subjects.show', $subject->id) }}"><button type="button" class="btn btn-primary float-right">
+                                <a href="{{ route('subjects.show', $subject) }}"><button type="button" class="btn btn-primary float-right">
                                         Go Back
                                     </button></a>
                                 <h3 class="font-semibold text-xl text-gray-800 leading-tight">View all Sub Modules</h3>
@@ -82,7 +82,7 @@
                         @method('POST')
                         <div class="form-group">
                             <label for="submodulename" class="col-form-label">Module Name:</label>
-                            <input type="text" class="form-control" id="submodulename" name="submodulename" maxlength="30" placeholder="E.g Marketing, for Business GCSE" required>
+                            <input type="text" class="form-control" id="submodulename" name="submodulename" maxlength="40" placeholder="E.g Marketing, for Business GCSE" required>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-form-label">Description:</label>

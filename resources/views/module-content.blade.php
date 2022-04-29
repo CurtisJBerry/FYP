@@ -16,10 +16,9 @@
                     <br>
                     <p> {{ $submodule->description }}</p>
                 </div>
-
+                @include('file-upload-modals')
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h3 class="font-semibold text-xl text-gray-800 leading-tight inline">Resources available for this module </h3>
-                    <br>
                     @if(Auth::user()->user_type !== "user")
                         <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addFileModal{{Auth::user()->id}}">
                             Add File
@@ -37,12 +36,12 @@
                         @endif
                     <p> PDF and Image files will open in browser, any other type of file will download automatically when clicking view.</p>
                     @endif
-                    <div class="grid grid-cols-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-6 hover:grid-cols-6 gap-4">
                         @if($tags->count())
                             @foreach($tags as $tag)
                                 @foreach($tag->resources as $file)
                                     @include('file-upload-modals')
-                                            <div class="flex items-center justify-center flex-col p-4 rounded-md w-40 space-y-4 bg-blue-300">
+                                            <div class="flex items-center justify-center flex-col p-4 rounded-md w-40 space-y-4 bg-blue-300" style="margin: 5px">
                                                 <h1 class="text-black">{{ $file->resource_name }}</h1>
                                                 <div class="inline-flex">
                                                     <a href="{{ route('file-view',[$file->resource_name, $file->id]) }}" title="View file" style="padding: 5px"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
