@@ -31,9 +31,13 @@
                                                     @if($test->count())
                                                         <tr>
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->test_name}}</td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm"></td>
+                                                            @if($test->submodule)
+                                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
+                                                            @else
+                                                                <td class="px-6 py-4 whitespace-nowrap text-sm">No Sub Module set</td>
+                                                                <td class="px-6 py-4 whitespace-nowrap text-sm">No Module set</td>
+                                                            @endif
                                                             <td class="px-6 py-4 whitespace-nowrap text-sm"><a href="{{ route('past-tests.show', $test->id) }}"><button type="submit" class="btn btn-primary">View All Scores</button></a></td>
                                                         </tr>
                                                     @else

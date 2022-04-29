@@ -18,9 +18,8 @@ class PastTestsController extends Controller
     public function index() {
 
         $user = User::where('id','=', Auth::user()->id)->with('tests', function ($query){
-            $query->groupBy('test_id');
+            $query->groupBy('test_id')->with('submodule')->where('test_name', '!=', 'Learner Type');
         })->paginate(5);
-
 
         return view('student/past-tests', ['user' => $user]);
 

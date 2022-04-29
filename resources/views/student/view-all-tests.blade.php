@@ -38,17 +38,23 @@
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->subject->subject_name}}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->module->module_name}}</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">{{$test->submodule->submodule_name}}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / {{config('global.maxquestions')}}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                        <a href="{{ route('/user-test.show', $test->id) }}">
+                                                            <button class="btn btn-primary">View</button>
+                                                        </a>
+                                                    </td>
                                                 @else
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">No subject name set.</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">No module name set.</td>
                                                     <td class="px-6 py-4 whitespace-nowrap text-sm">No submodule name set.</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / {{config('global.maxquestions')}}</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                        <a href="{{ route('user-learner.show', $learnertest->id) }}">
+                                                            <button class="btn btn-primary">View</button>
+                                                        </a>
+                                                    </td>
                                                 @endif
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{count($test->questions)}} / {{config('global.maxquestions')}}</td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                    <a href="{{ route('/user-test.show', $test->id) }}">
-                                                        <button class="btn btn-primary">View</button>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     @else

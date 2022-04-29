@@ -21,9 +21,11 @@ class StudentTestController extends Controller
     public function index() {
 
         $tests = Test::paginate(10);
+        $learnertest = Test::where('test_name', "Learner Type")->first();
+
         //$submodules = SubModule::with('module.subject')->get();
 
-        return view('student/view-all-tests', compact('tests'));
+        return view('student/view-all-tests', compact('tests', 'learnertest'));
 
     }
 
