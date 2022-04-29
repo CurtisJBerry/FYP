@@ -82,7 +82,7 @@ class ProcessViewingDataController extends Controller
                 $user->learner_type = $key;
                 $user->save();
 
-                return back()->banner('Your Learner Type has been updated to ' . ucfirst($key) . ' as ' . $max  . '% of your viewing history matched this type.');
+                return back()->banner('Your Learner Type has been updated to ' . ucfirst($key) . ' as your viewing history matched this type.');
             }
 
         }
