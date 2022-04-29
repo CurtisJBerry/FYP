@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminChangelogController;
+use App\Http\Controllers\admin\AdminProcessAllUserData;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminVerificationController;
 use App\Http\Controllers\HomeController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\teacher\TeacherQuestionController;
 use App\Http\Controllers\teacher\TeacherTestController;
 use App\Models\SubModule;
 use App\Models\Test;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +66,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
         Route::post('/file-edit/{id}', 'update')->name('file-edit');
     });
 
+    Route::get('/process-data/{id}',[ProcessViewingDataController::class, '__invoke'])->name('process-data.invoke');
+
 
     //user only routes
     Route::group(['middleware' => 'is_user:user'], function () {
@@ -91,15 +95,17 @@ Route::group(['auth:sanctum', 'verified'], function() {
 
         Route::post('/user-learner/update',[LearnerTypeTestController::class, 'update'])->name('/user-learner.update');
 
-        Route::get('/process-data/{id}',[ProcessViewingDataController::class, '__invoke'])->name('process-data.invoke');
-
     });
 
     //admin only routes
     Route::group(['middleware' => 'is_admin:admin'], function () {
 
         Route::get('/admin/dashboard', function () {
-            return view('admin/admin-dashboard');
+
+            $students = count(User::where('user_type', '=', 'user')->get());
+            $teachers = count(User::where('user_type', '=', 'teacher')->get());
+
+            return view('admin/admin-dashboard', compact('students', 'teachers'));
         })->name('admin.dashboard');
 
         Route::resource('/admin-users',AdminUserController::class);
@@ -109,6 +115,8 @@ Route::group(['auth:sanctum', 'verified'], function() {
         Route::post('/verification/update',[AdminVerificationController::class, 'update'])->name('verification-update');
 
         Route::resource('/changelog', AdminChangelogController::class);
+
+        Route::get('/process-all-users', [AdminProcessAllUserData::class, '__invoke'])->name('process-all-users.invoke');;
 
     });
 

@@ -2,11 +2,14 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\student\ProcessViewingDataController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Auth;
 
 class Kernel extends ConsoleKernel
 {
+
     /**
      * Define the application's command schedule.
      *

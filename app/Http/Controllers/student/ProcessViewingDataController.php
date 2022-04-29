@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Collection;
 
 class ProcessViewingDataController extends Controller

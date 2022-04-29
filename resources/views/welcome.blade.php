@@ -25,7 +25,7 @@
         <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{ asset('/images/app_logo.png') }}"  alt="Smart Teaching" style="width: 400px; height: 400px;" /></div>
         <div class="col-lg-5">
             <h1 class="font-weight-light" style="font-size: 40px">Smart Teaching</h1>
-            <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
+            <p>We wanted to make learning a more personal experience as we understand everyone learns in different ways, through our Learner type test and monitoring your viewing history we try to make the content you see as relevant and personalised to you as possible.</p>
             <a class="btn btn-primary" href="{{ route('register') }}">Get Started</a>
         </div>
     </div>
@@ -41,7 +41,6 @@
                     <h2 class="card-title">Subjects</h2>
                     <p class="card-text">All of the 31 GCSE subjects are covered including several different exam boards for better content availability. The subjects are broken down into modules and sub modules within these so that the right content can be found easily.</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
             </div>
         </div>
         <div class="col-md-4 mb-5">
@@ -50,16 +49,15 @@
                     <h2 class="card-title">Learner Type Test</h2>
                     <p class="card-text">This is a short test we suggest you take once you have created an account and logged in for the first time, this test will try to analyse your answers to certain questions and based on your responses we will suggest which learner type you may be.</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
             </div>
         </div>
         <div class="col-md-4 mb-5">
             <div class="card h-100">
                 <div class="card-body">
                     <h2 class="card-title">Learner Relevant Content</h2>
-                    <p class="card-text">Update this section!!</p>
+                    <p class="card-text">Upon taking our Learner Type Test and setting this on your account, once you look into a subject you will be shown the available materials that match your learner type based on who the material is most suited to.
+                        If you'd rather see all the content for a given subject, there is a toggle that will display all available materials which are listed with their tags which show who the material is most suited to.</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
             </div>
         </div>
     </div>
