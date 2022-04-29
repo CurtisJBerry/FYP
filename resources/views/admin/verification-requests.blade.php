@@ -144,11 +144,7 @@
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $request->years_experience }}</td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $request->status }}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal{{$request->user_id}}">
-                                                        Update
-                                                    </button>
-                                                </td>
+                                                <td></td>
                                             </tr>
                                         @endforeach
                                     @else
