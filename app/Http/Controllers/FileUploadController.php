@@ -128,11 +128,12 @@ class FileUploadController extends Controller
 
     public function view($name, $id)
     {
-
-        $log = new Changelog;
-        $log->user_id = Auth::user()->id;
-        $log->resource_id = $id;
-        $log->save();
+        if(Auth::user()->user_type === 'user'){
+            $log = new Changelog;
+            $log->user_id = Auth::user()->id;
+            $log->resource_id = $id;
+            $log->save();
+        }
 
         $extension = pathinfo(public_path('/storage/files/'.$name), PATHINFO_EXTENSION);
 
@@ -147,10 +148,12 @@ class FileUploadController extends Controller
     public function download($name, $id)
     {
 
-        $log = new Changelog;
-        $log->user_id = Auth::user()->id;
-        $log->resource_id = $id;
-        $log->save();
+        if(Auth::user()->user_type === 'user'){
+            $log = new Changelog;
+            $log->user_id = Auth::user()->id;
+            $log->resource_id = $id;
+            $log->save();
+        }
 
 
         $filepath = public_path('/storage/files/'.$name);
@@ -183,7 +186,6 @@ class FileUploadController extends Controller
     public function getResource(Request $request, $extension, $path): Resource
     {
         $resource = new Resource;
-
 
         $resource->resource_name = $request->filename.".".$extension;
         $resource->resource_path = $path;
