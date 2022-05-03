@@ -47,7 +47,7 @@ email: teacher@email.com  password: password
 - Admin account: 
 email: admin@email.com  password: password
 
-
+6. Use the features for each account, there is seed data to show how the data analysis function works
 
 
 
