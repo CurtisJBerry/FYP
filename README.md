@@ -32,20 +32,15 @@ In this example I am using xampp to host locally
 ```
 php artisan migrate
 ```
-Import sql file with name
+Import sql file with name fyp-03-05-22.sql (This is due to the amount of data in the final application, seeding would be more time consuming)
 
-## Running the tests
-
-```
-php artisan test
-```
-
-## Problems
-
-If there are any problems at all, please contact me using my email:
-```
-curtis_j_berry@hotmail.com
-```
+4. Open the homepage and login using the following details
+- User account: 
+email: user@email.com  password: password
+- Teacher account: 
+email: teacher@email.com  password: password
+- Admin account: 
+email: admin@email.com  password: password
 
 
 
