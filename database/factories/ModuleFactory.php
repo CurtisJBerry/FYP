@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ModuleFactory extends Factory
@@ -14,7 +15,8 @@ class ModuleFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'module_name' => $this->faker->realText('20'),
+            'description' => $this->faker->realText('20'),
         ];
     }
 }

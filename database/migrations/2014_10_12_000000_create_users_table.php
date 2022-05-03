@@ -20,9 +20,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->string('userType')->default('USR');
+            $table->enum('user_type', ['admin','teacher', 'user'])->default('user');
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->string('account_type')->default('student');
             $table->enum('learner_type',['reading','auditory','visual','kinesthetic'])->nullable();
             $table->foreignId('current_team_id')->nullable();
             $table->timestamps();

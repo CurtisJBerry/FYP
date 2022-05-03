@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,12 +14,16 @@ class HomeController extends Controller
             return redirect()->route('login');
         }
 
-        if(Auth::user()->userType === 'ADM'){
+        if(Auth::user()->user_type === 'admin'){
             return redirect()->route('admin.dashboard');
         }
 
-        if(Auth::user()->userType === 'USR'){
+        if(Auth::user()->user_type === 'user'){
             return redirect()->route('user.dashboard');
+        }
+
+        if(Auth::user()->user_type === 'teacher'){
+            return redirect()->route('teacher.dashboard');
         }
     }
 }

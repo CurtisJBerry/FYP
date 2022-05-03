@@ -14,7 +14,8 @@ class AnswerFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'answer_text' => $this->faker->text(),
+            'correct' => $this->faker->randomLetter('1'),
         ];
     }
 }

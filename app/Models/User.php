@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -26,7 +27,11 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'user_type',
+        'learner_type',
     ];
 
     /**
@@ -58,4 +63,37 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Get the verification requests for the user.
+     */
+    public function verification(): HasMany
+    {
+        return $this->hasMany(VerificationRequest::class);
+    }
+
+    /**
+     * Get the verification requests for the user.
+     */
+    public function resources(): HasMany
+    {
+        return $this->hasMany(Resource::class);
+    }
+
+    /**
+     * Get the changelog for the user.
+     */
+    public function changelog(): HasMany
+    {
+        return $this->hasMany(Changelog::class);
+    }
+
+    /**
+     * The tests that belong to the user.
+     */
+    public function tests()
+    {
+        return $this->belongsToMany(Test::class)->withPivot('test_id','user_id','score');
+
+    }
 }
